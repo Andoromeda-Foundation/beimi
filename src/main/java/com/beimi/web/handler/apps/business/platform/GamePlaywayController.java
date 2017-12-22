@@ -56,7 +56,7 @@ public class GamePlaywayController extends Handler{
 	
 	@RequestMapping({"/playway/add"})
 	@Menu(type="platform", subtype="playway")
-	public ModelAndView add(ModelMap map , HttpServletRequest request , @Valid String id){
+	public ModelAndView add(ModelMap map , HttpServletRequest request , @Valid String id, @Valid String typeid){
 		
 		map.addAttribute("game", BeiMiDic.getInstance().getDicItem(id)) ;
 		map.addAttribute("gameModelList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_TYPE_DIC, id)) ;
@@ -66,6 +66,7 @@ public class GamePlaywayController extends Handler{
 
 		map.addAttribute("dicList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_ROOMTITLE_DIC)) ;
 		
+		map.addAttribute("typeid", typeid) ;
 		return request(super.createRequestPageTempletResponse("/apps/business/platform/game/playway/add"));
 	}
 	

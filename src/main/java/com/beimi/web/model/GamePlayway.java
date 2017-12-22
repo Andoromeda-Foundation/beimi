@@ -62,7 +62,9 @@ public class GamePlayway implements java.io.Serializable{
 	private String game ;	//游戏类型 ： 麻将：地主：德州
 	private int players ;	//游戏人数
 	
-	private int numofgames ;//局数 ， 大厅游戏未 0 表示 无限
+	private int numofgames ;//局数 ， 大厅游戏为 0 表示 无限
+	
+	private String wintype ;//胡牌方式，推倒胡，血战 、 血流
 	
 	
 	private String roomtype ;	//房间类型， 房卡：大厅
@@ -294,4 +296,10 @@ public class GamePlayway implements java.io.Serializable{
     public void setMjwinrules(String mjwinrules) {
         this.mjwinrules = mjwinrules;
     }
+	public String getWintype() {
+		return wintype;
+	}
+	public void setWintype(String wintype) {
+		this.wintype = wintype;
+	}
 }
