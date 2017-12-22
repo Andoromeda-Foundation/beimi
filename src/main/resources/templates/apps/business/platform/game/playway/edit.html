@@ -3,6 +3,7 @@
 		action="/apps/platform/playway/update.html">
 		<input type="hidden" name="game" value="${game.id!''}">
 		<input type="hidden" name="id" value="${playway.id!''}">
+		<input type="hidden" name="typeid" value="${playway.typeid!''}">
 		<div class="layui-row">
 			<div class="layui-col-md4">
 				<div class="layui-form-item">
@@ -27,16 +28,14 @@
 					</div>
 				</div>
 			</div>
-			<div class="layui-col-md4">
+			<div class="layui-col-md4" id="wintype" <#if playway.code?? && playway.code != "majiang">style="display:none;"</#if>>
 				<div class="layui-form-item">
-					<label class="layui-form-label">游戏模式：</label>
+					<label class="layui-form-label">胡牌方式：</label>
 					<div class="layui-input-block">
-						<select name="typeid" lay-verify="required">
-							<#if gameModelList??>
-							<#list gameModelList as gameModel>
-							<option value="${gameModel.id!''}" <#if playway?? && playway.typeid == gameModel.id>selected="selected"</#if>>${gameModel.name!''}</option>
-							</#list>
-							</#if>
+						<select name="wintype" lay-verify="required">
+							<option value="tui" <#if playway.wintype?? && playway.wintype == "tui">selected="selected"</#if>>推倒胡</option>
+							<option value="end" <#if playway.wintype?? && playway.wintype == "end">selected="selected"</#if>>血战到底</option>
+							<option value="river" <#if playway.wintype?? && playway.wintype == "river">selected="selected"</#if>>血流成河</option>
 						</select>
 					</div>
 				</div>

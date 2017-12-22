@@ -2,6 +2,7 @@
 	<form class="layui-form"
 		action="/apps/platform/playway/save.html">
 		<input type="hidden" name="game" value="${game.id!''}">
+		<input type="hidden" name="typeid" value="${typeid!''}">
 		<div class="layui-row">
 			<div class="layui-col-md4">
 				<div class="layui-form-item">
@@ -26,16 +27,14 @@
 					</div>
 				</div>
 			</div>
-			<div class="layui-col-md4">
+			<div class="layui-col-md4" id="wintype" style="display:none;">
 				<div class="layui-form-item">
-					<label class="layui-form-label">游戏模式：</label>
+					<label class="layui-form-label">胡牌方式：</label>
 					<div class="layui-input-block">
-						<select name="typeid" lay-verify="required">
-							<#if gameModelList??>
-							<#list gameModelList as gameModel>
-							<option value="${gameModel.id!''}">${gameModel.name!''}</option>
-							</#list>
-							</#if>
+						<select name="wintype" lay-verify="required">
+							<option value="tui">推倒胡</option>
+							<option value="end">血战到底</option>
+							<option value="river">血流成河</option>
 						</select>
 					</div>
 				</div>
@@ -226,7 +225,9 @@ layui.use('form', function(){
   form.on("select(gametype)" , function(data){
       if(data.value == "dizhu"){
           $('#gametype').show();
+          $('#wintype').hide();
 	  }else{
+	  	  $('#wintype').show();
           $('#gametype').hide();
 	  }
   });
