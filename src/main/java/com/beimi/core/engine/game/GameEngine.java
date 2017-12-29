@@ -525,27 +525,41 @@ public class GameEngine {
 				}else if(!StringUtils.isBlank(action) && action.equals(BMDataContext.PlayerAction.HU.toString())){	//判断下是不是 真的胡了 ，避免外挂乱发的数据
 					Action playerAction = new Action(userid , action , card);
 					player.getActions().add(playerAction) ;
-					
+					GamePlayway gamePlayway = (GamePlayway) CacheHelper.getSystemCacheBean().getCacheObject(gameRoom.getPlayway(), gameRoom.getOrgi()) ;
 					/**
-					 * 记录胡牌的相关信息，推倒胡 | 血战 | 血流
+					 * 不同的胡牌方式，处理流程不同，推倒胡，直接进入结束牌局 ， 血战：当前玩家结束牌局，血流：继续进行，下一个玩家
 					 */
-					board.setNextplayer(new NextPlayer(userid , false));
-					
-					actionEvent.setTarget(board.getLast().getUserid());
-					/**
-					 * 用于客户端播放 胡牌的 动画 ， 点胡 和 自摸 ，播放不同的动画效果
-					 */
-					ActionTaskUtils.sendEvent("selectaction", actionEvent , gameRoom);
-					CacheHelper.getBoardCacheBean().put(gameRoom.getId() , board, gameRoom.getOrgi());	//更新缓存数据
-					
-					/**
-					 * 胡牌方式 从 Playway 配置中读取   ， 可选的 胡牌方式 有  推倒胡 | 血战 | 血流
-					 * 根据 配置读取 牌局结束的配置规则 ， 如果是推倒胡，则直接进入结算 ， 如果是血战，则胡了以后 继续往下进行 ，
-					 * 如果是 血战到底，则继续往下走，可以多次胡牌，当期Player记录相关的胡牌信息
-					 */
-					
-					board.playcards(board, gameRoom, player, orgi);
-					
+					if(gamePlayway.getWintype().equals(BMDataContext.MaJiangWinType.TUI.toString())){		//推倒胡
+						GameUtils.getGame(gameRoom.getPlayway() , orgi).change(gameRoom , BeiMiGameEvent.ALLCARDS.toString() , 0);	//打完牌了,通知结算
+					}else{ //血战到底
+						 if(gamePlayway.getWintype().equals(BMDataContext.MaJiangWinType.END.toString())){		//标记当前玩家的状态 是 已结束
+							 player.setEnd(true);
+						 }
+						 player.setHu(true); 	//标记已经胡了
+						 /**
+						  * 当前 Player打上标记，已经胡牌了，杠碰吃就不会再有了
+						  */
+						 /**
+						  * 下一个玩家出牌
+						  */
+						player = board.nextPlayer(board.index(player.getPlayuser())) ;
+						/**
+						 * 记录胡牌的相关信息，推倒胡 | 血战 | 血流
+						 */
+						board.setNextplayer(new NextPlayer(player.getPlayuser() , false));
+						
+						actionEvent.setTarget(board.getLast().getUserid());
+						/**
+						 * 用于客户端播放 胡牌的 动画 ， 点胡 和 自摸 ，播放不同的动画效果
+						 */
+						ActionTaskUtils.sendEvent("selectaction", actionEvent , gameRoom);
+						CacheHelper.getBoardCacheBean().put(gameRoom.getId() , board, gameRoom.getOrgi());	//更新缓存数据
+						
+						/**
+						 * 杠了以后， 从 当前 牌的 最后一张开始抓牌
+						 */
+						board.dealRequest(gameRoom, board, orgi , true , player.getPlayuser());
+					}
 				}
 			}
 		}

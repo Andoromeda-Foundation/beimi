@@ -27,6 +27,9 @@ public class Player implements Message,java.io.Serializable , Cloneable{
 	private boolean recatch ;	//补抢
 	private int deskcards ;	//剩下多少张牌
 	
+	private boolean hu ;	//已经胡过牌了
+	private boolean end ;	//血战的时候，标记 结束
+	
 	private String command ;
 	
 	private boolean selected ;	//已经选择 花色
@@ -164,5 +167,21 @@ public class Player implements Message,java.io.Serializable , Cloneable{
 
 	public void setCommand(String command) {
 		this.command = command;
+	}
+
+	public boolean isHu() {
+		return hu;
+	}
+
+	public void setHu(boolean hu) {
+		this.hu = hu;
+	}
+
+	public boolean isEnd() {
+		return end;
+	}
+
+	public void setEnd(boolean end) {
+		this.end = end;
 	}
 }

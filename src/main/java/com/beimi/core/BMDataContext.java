@@ -262,6 +262,17 @@ public class BMDataContext {
 		}
 	}
 	
+	public enum MaJiangWinType{
+		TUI,
+		RIVER,
+		END,
+		LOST;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	public enum PVActionEnum{
 		INCOME,	//
 		CONSUME,
