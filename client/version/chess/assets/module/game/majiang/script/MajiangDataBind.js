@@ -153,6 +153,22 @@ cc.Class({
         inviteplayer:{
             default:null ,
             type : cc.Prefab
+        },
+        hu_cards_current:{
+            default:null ,
+            type : cc.Node
+        },
+        hu_cards_top:{
+            default:null ,
+            type : cc.Node
+        },
+        hu_cards_left:{
+            default:null ,
+            type : cc.Node
+        },
+        hu_cards_right:{
+            default:null ,
+            type : cc.Node
         }
     },
 
@@ -860,7 +876,6 @@ cc.Class({
             /**
              * 杠后移除当前手牌，进入到 杠 列表里
              */
-
             for(var inx = 0 ; inx < context.playercards.length ; ){
                 let temp = context.playercards[inx].getComponent("HandCards");
                 if(data.cardtype == temp.mjtype && data.cardvalue == temp.mjvalue){
@@ -870,48 +885,58 @@ cc.Class({
                     inx++ ;
                 }
             }
+            if(data.action == "hu") {
+                //胡牌了，把胡的牌放入到胡牌列表里，然后 ， 把当前的玩家的牌局置为不可点击
+                let hu_card = cc.instantiate(context.takecards_one);
+                let temp = hu_card.getComponent("DeskCards");
+                temp.init(data.card);
 
-            let cards_gang  ;
+                context.deskcards.push(hu_card);
+                hu_card.setScale (0.8 , 0.8) ;
+                hu_card.parent = context.hu_cards_current;
+            }else{
+                let cards_gang;
 
-            /**
-             * 刚和碰共用一个 Prefab，都是来自于 cards_gang_ming_prefab ，显示方式也相同， 区别在于：刚显示四张牌，碰显示两张牌
-             */
-            if(data.actype == "an"){
-                cards_gang = cc.instantiate(context.cards_gang_an_prefab);
-            }else{
-                cards_gang = cc.instantiate(context.cards_gang_ming_prefab);
-            }
-            let temp_script = cards_gang.getComponent("GangAction");
-            if(data.action == "gang"){
-                temp_script.init(data.card , true);
-            }else{
-                temp_script.init(data.card , false);
-            }
-            if(data.action == "peng" || data.action == "chi"){
                 /**
-                 *
-                 * 碰了以后的
+                 * 刚和碰共用一个 Prefab，都是来自于 cards_gang_ming_prefab ，显示方式也相同， 区别在于：刚显示四张牌，碰显示两张牌
                  */
-                let temp = context.cards_panel.children[context.cards_panel.children.length - 1] ;
-                if(temp!=null){
-                    let script = temp.getComponent("HandCards") ;
-                    if(script != null){
-                        script.lastone() ;
+                if (data.actype == "an") {
+                    cards_gang = cc.instantiate(context.cards_gang_an_prefab);
+                } else {
+                    cards_gang = cc.instantiate(context.cards_gang_ming_prefab);
+                }
+                let temp_script = cards_gang.getComponent("GangAction");
+                if (data.action == "gang") {
+                    temp_script.init(data.card, true);
+                } else {
+                    temp_script.init(data.card, false);
+                }
+                if (data.action == "peng" || data.action == "chi") {
+                    /**
+                     *
+                     * 碰了以后的
+                     */
+                    let temp = context.cards_panel.children[context.cards_panel.children.length - 1];
+                    if (temp != null) {
+                        let script = temp.getComponent("HandCards");
+                        if (script != null) {
+                            script.lastone();
+                        }
                     }
                 }
-            }
 
-            cards_gang.parent = context.gang_current ;
-            context.actioncards.push(cards_gang) ;
+                cards_gang.parent = context.gang_current;
+                context.actioncards.push(cards_gang);
 
-            for(var inx = 0 ; inx < context.deskcards.length ; inx++){
-                var temp = context.deskcards[inx] ;
-                if(temp!=null){
-                    var script = temp.getComponent("DeskCards");
-                    if(script!=null && script.value == data.card){
-                        temp.destroy() ;
-                        context.deskcards.splice(inx,inx+1) ;
-                        break ;
+                for (var inx = 0; inx < context.deskcards.length; inx++) {
+                    var temp = context.deskcards[inx];
+                    if (temp != null) {
+                        var script = temp.getComponent("DeskCards");
+                        if (script != null && script.value == data.card) {
+                            temp.destroy();
+                            context.deskcards.splice(inx, inx + 1);
+                            break;
+                        }
                     }
                 }
             }
