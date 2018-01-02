@@ -169,6 +169,10 @@ cc.Class({
         hu_cards_right:{
             default:null ,
             type : cc.Node
+        },
+        mask:{
+            default:null ,
+            type : cc.Node
         }
     },
 
@@ -180,6 +184,9 @@ cc.Class({
         this.initdata(true);
         this.resize();
         let self = this ;
+        if(this.mask != null){
+            this.mask.active = false ;
+        }
         if(this.ready()) {
             let socket = this.socket();
             this.routes = {};
@@ -873,18 +880,7 @@ cc.Class({
             }
 
 
-            /**
-             * 杠后移除当前手牌，进入到 杠 列表里
-             */
-            for(var inx = 0 ; inx < context.playercards.length ; ){
-                let temp = context.playercards[inx].getComponent("HandCards");
-                if(data.cardtype == temp.mjtype && data.cardvalue == temp.mjvalue){
-                    context.cardpool.put(context.playercards[inx]) ;
-                    context.playercards.splice(inx, 1) ;
-                }else{
-                    inx++ ;
-                }
-            }
+
             if(data.action == "hu") {
                 //胡牌了，把胡的牌放入到胡牌列表里，然后 ， 把当前的玩家的牌局置为不可点击
                 let hu_card = cc.instantiate(context.takecards_one);
@@ -892,9 +888,24 @@ cc.Class({
                 temp.init(data.card);
 
                 context.deskcards.push(hu_card);
-                hu_card.setScale (0.8 , 0.8) ;
+                hu_card.setScale (0.5 , 0.5) ;
                 hu_card.parent = context.hu_cards_current;
+                context.mask.active = true ;    //遮罩，不让操作了
+
             }else{
+                /**
+                 * 杠后移除当前手牌，进入到 杠 列表里
+                 */
+                for(var inx = 0 ; inx < context.playercards.length ; ){
+                    let temp = context.playercards[inx].getComponent("HandCards");
+                    if(data.cardtype == temp.mjtype && data.cardvalue == temp.mjvalue){
+                        context.cardpool.put(context.playercards[inx]) ;
+                        context.playercards.splice(inx, 1) ;
+                    }else{
+                        inx++ ;
+                    }
+                }
+
                 let cards_gang;
 
                 /**
@@ -1460,6 +1471,7 @@ cc.Class({
         /**
          * 玩家数据销毁条件（房间解散，或者有玩家退出房价的时候，所有玩家数据销毁后冲洗排序）
          */
+        this.mask.active = false ;
     },
     restart:function(){
         /**
