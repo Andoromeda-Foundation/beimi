@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-01-07 21:35:05
+Date: 2018-01-08 00:00:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -67,7 +67,7 @@ CREATE TABLE `bm_attachment_file` (
   `organ` varchar(32) DEFAULT NULL COMMENT '组织机构ID',
   `datastatus` tinyint(4) DEFAULT NULL COMMENT '数据状态（逻辑删除）',
   `title` varchar(255) DEFAULT NULL COMMENT '标题',
-  `url` varchar(255) CHARACTER SET utf32 DEFAULT NULL COMMENT '地址',
+  `url` varchar(255) DEFAULT NULL COMMENT '地址',
   `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
   `filelength` int(11) DEFAULT NULL COMMENT '文件长度',
   `filetype` varchar(255) DEFAULT NULL COMMENT '文件类型',
