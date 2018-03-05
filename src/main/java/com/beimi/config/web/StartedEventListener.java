@@ -64,7 +64,7 @@ public class StartedEventListener implements ApplicationListener<ContextRefreshe
     	
     	GamePlaywayRepository playwayRes = event.getApplicationContext().getBean(GamePlaywayRepository.class) ;
     	List<GamePlayway> gamePlaywayList = playwayRes.findAll() ;
-    	if(gamePlaywayList.size() > 0){
+    	if(gamePlaywayList != null){
     		for(GamePlayway playway : gamePlaywayList){
     			CacheHelper.getSystemCacheBean().put(playway.getId(), playway, playway.getOrgi());
     		}
@@ -72,7 +72,7 @@ public class StartedEventListener implements ApplicationListener<ContextRefreshe
     	
     	GameRoomRepository gameRoomRes = event.getApplicationContext().getBean(GameRoomRepository.class) ;
     	List<GameRoom> gameRoomList = gameRoomRes.findAll() ;
-    	if(gameRoomList.size() > 0){
+    	if(gameRoomList!= null){
     		for(GameRoom gameRoom : gameRoomList){
     			if(gameRoom.isCardroom()){
     				gameRoomRes.delete(gameRoom);//回收房卡房间资源

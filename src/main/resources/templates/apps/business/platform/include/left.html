@@ -36,6 +36,31 @@
 	</li>
 	
 	<li class="layui-nav-item layui-nav-itemed">
+		<a class="layui-nav-title" href="javascript:;">游戏商城</a>
+		<dl class="layui-nav-child">
+			<#if shopWaresTypeList??>
+			<#list shopWaresTypeList as shopWaresType>
+			<dd  <#if subtype?? && subtype == 'wares' && shopWaresType?? && shopWaresType.id == dic.id>class="layui-this"</#if>>
+				<a href="/apps/shop/wares.html?type=${shopWaresType.id!''}">${shopWaresType.name!''}</a>
+			</dd>
+			</#list>
+			</#if>
+		</dl>
+	</li>
+	
+	<li class="layui-nav-item layui-nav-itemed">
+		<a class="layui-nav-title" href="javascript:;">订单管理</a>
+		<dl class="layui-nav-child">
+			<dd  <#if subtype?? && subtype == 'orders'>class="layui-this"</#if>>
+				<a href="/apps/shop/orders.html">订单管理</a>
+			</dd>
+			<dd  <#if subtype?? && subtype == 'orderhis'>class="layui-this"</#if>>
+				<a href="/apps/shop/orderhis.html">购买记录</a>
+			</dd>
+		</dl>
+	</li>
+	
+	<li class="layui-nav-item layui-nav-itemed">
 		<a class="layui-nav-title" href="javascript:;">游戏信息</a>
 		<dl class="layui-nav-child">
 			<dd  <#if subtype?? && subtype == 'gameusers'>class="layui-this"</#if>>

@@ -106,6 +106,17 @@ public class GuestPlayerController extends Handler{
 			playerResultData.setGametype(gameConfig.getGamemodel());
 			playerResultData.setNoaiwaitime(gameConfig.getTimeout());	//无AI的时候 等待时长
 			playerResultData.setNoaimsg(gameConfig.getTimeoutmsg());    //无AI的时候，到达最大时长以后的 提示消息，提示完毕后，解散房间
+			
+			playerResultData.setSubsidy(gameConfig.isSubsidy());		//是否启用了破产补助
+			playerResultData.setSubtimes(gameConfig.getSubtimes());		//每天破产补助的次数
+			playerResultData.setSubgolds(gameConfig.getSubgolds());		//每次破产补助的金额
+			
+			playerResultData.setSubmsg(gameConfig.getSubmsg());
+			
+			playerResultData.setRecmsg(gameConfig.getRecmsg());
+			
+			playerResultData.setLefttimes(gameConfig.getSubtimes());	//需要从数据库中查询当天剩余次数
+			
 			/**
 			 * 封装 游戏对象，发送到客户端
 			 */

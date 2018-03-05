@@ -80,6 +80,8 @@ public class UserInterceptorHandler extends HandlerInterceptorAdapter {
 				view.addObject("systemConfig", new SystemConfig())  ;
 			}
 			view.addObject("gameTypeList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_TYPE_DIC)) ;
+			
+			view.addObject("shopWaresTypeList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SHOP_WARES_TYPE_DIC)) ;
     	}
     }
 

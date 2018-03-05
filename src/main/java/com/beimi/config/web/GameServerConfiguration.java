@@ -74,7 +74,7 @@ public class GameServerConfiguration
 //	    config.setSSLProtocol("https");
 		int workThreads = !StringUtils.isBlank(threads) && threads.matches("[\\d]{1,6}") ? Integer.parseInt(threads) : 100 ;
 		config.setWorkerThreads(workThreads);
-
+		
 //		config.setStoreFactory(new HazelcastStoreFactory());
 		config.setAuthorizationListener(new AuthorizationListener() {
 			public boolean isAuthorized(HandshakeData data) {

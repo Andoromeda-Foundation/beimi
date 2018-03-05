@@ -170,6 +170,67 @@
 													</div>
 												</div>
 											</div>
+											<div class="ukefu-webim-prop">
+												<div class="ukefu-webim-tl" style="clear:both;">7、启用破产补助功能</div>
+												<div class="box-item">
+													<div class="row">
+														<div class="col-lg-8">
+															<p>玩家的金币用完以后的补助功能</p>
+															<p style="color:#888888;font-size:13px;margin-top:10px;">启用后设置每天补助的次数和每次补助的金币数量</p>
+														</div>
+														<div class="col-lg-4" style="text-align:right;">
+															<input type="checkbox" title="启用" name="subsidy" lay-filter="subsidy" value="1" <#if gameConfig?? && gameConfig.subsidy>checked="checked"</#if>>
+														</div>
+													</div>
+												</div>
+												<div class="row subsidy" style="margin-top:20px;<#if gameConfig?? && gameConfig.subsidy><#else>display:none;</#if>">
+													<div class="col-lg-8">
+														<p>破产补助次数</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;">填写每个玩家每天可以进行破产补助的次数</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<select name="subtimes">
+															<#list 1..10 as times>
+															<option value="${times}" <#if gameConfig.subtimes == times>selected="selected"</#if>>${times}次</option>
+															</#list>
+														</select>     
+														      
+													</div>
+												</div>
+												<div class="row subsidy" style="margin-top:20px;<#if gameConfig?? && gameConfig.subsidy><#else>display:none;</#if>">
+													<div class="col-lg-8">
+														<p>每次补助的金币数量</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;">填写每次破产补助的金币数量</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="text" name="subgolds" id="subgolds" value="${gameConfig.subgolds!''}" autocomplete="off" class="layui-input" lay-verify="number">
+													</div>
+												</div>
+												<div class="row subsidy" style="margin-top:20px;<#if gameConfig?? && gameConfig.subsidy><#else>display:none;</#if>">
+													<div class="col-lg-8">
+														<p>破产补助的提示消息</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;">客户端弹出提示破产补助的提示消息</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="text" name="submsg" id="submsg" value="${gameConfig.submsg!''}" autocomplete="off" class="layui-input" maxlength="100">
+													</div>
+												</div>
+											</div>
+											
+											<div class="ukefu-webim-prop">
+												<div class="ukefu-webim-tl" style="clear:both;">8、金币不足时进入充值的提示消息</div>
+												<div class="box-item">
+													<div class="row">
+														<div class="col-lg-8">
+															<p>玩家金币不足的时候，点击进入游戏时的提示消息</p>
+															<p style="color:#888888;font-size:13px;margin-top:10px;">玩家如果还有破产补助次数，系统会优先提示进行破产补助</p>
+														</div>
+														<div class="col-lg-4" style="text-align:right;">
+															<input type="text" name="recmsg" maxlength="100" value="<#if gameConfig && gameConfig.recmsg??>${gameConfig.recmsg}<#else>金币不足，请充值。</#if>" autocomplete="off" class="layui-input">
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -254,6 +315,13 @@
             }else{
                 $('.anysdk').hide();
             }
-        })
+        });
+        form.on("checkbox(subsidy)" , function(data){
+            if(data.elem.checked == true){
+                $('.subsidy').show();
+            }else{
+                $('.subsidy').hide();
+            }
+        });
 	});
 </script>

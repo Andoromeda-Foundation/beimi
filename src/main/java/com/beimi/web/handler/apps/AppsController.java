@@ -15,9 +15,6 @@ import com.beimi.web.service.repository.jpa.UserRepository;
 @Controller
 public class AppsController extends Handler{
 	
-	@Autowired
-	private UserRepository userRes;
-	
 	@RequestMapping({"/apps/content"})
 	@Menu(type="apps", subtype="content")
 	public ModelAndView content(ModelMap map , HttpServletRequest request){

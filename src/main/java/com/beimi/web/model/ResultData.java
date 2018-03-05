@@ -26,6 +26,14 @@ public class ResultData implements java.io.Serializable{
 	private int noaiwaitime ;			//没有AI接入的时候的最大等待时长
 	private String noaimsg ;			//没有AI接入的时候达到最大等待时长的 提示消息
 	
+	private boolean subsidy ;	//启用破产补助
+	private int subtimes ;		//破产补助次数
+	private int subgolds ;		//破产补助金额
+	private String submsg ;		//破产补助提示消息
+	private String recmsg ;		//金币不足进行充值的时候的提示
+	
+	private int lefttimes ;		//当天剩余补助次数
+	
 	private Token token ;
 	private List<BeiMiGame> games ;		//游戏配置里选择的游戏类型
 	
@@ -123,5 +131,53 @@ public class ResultData implements java.io.Serializable{
 
 	public void setNoaimsg(String noaimsg) {
 		this.noaimsg = noaimsg;
+	}
+
+	public boolean isSubsidy() {
+		return subsidy;
+	}
+
+	public void setSubsidy(boolean subsidy) {
+		this.subsidy = subsidy;
+	}
+
+	public int getSubtimes() {
+		return subtimes;
+	}
+
+	public void setSubtimes(int subtimes) {
+		this.subtimes = subtimes;
+	}
+
+	public int getSubgolds() {
+		return subgolds;
+	}
+
+	public void setSubgolds(int subgolds) {
+		this.subgolds = subgolds;
+	}
+
+	public int getLefttimes() {
+		return lefttimes;
+	}
+
+	public void setLefttimes(int lefttimes) {
+		this.lefttimes = lefttimes;
+	}
+
+	public String getSubmsg() {
+		return submsg;
+	}
+
+	public void setSubmsg(String submsg) {
+		this.submsg = submsg;
+	}
+
+	public String getRecmsg() {
+		return recmsg;
+	}
+
+	public void setRecmsg(String recmsg) {
+		this.recmsg = recmsg;
 	}
 }

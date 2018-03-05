@@ -60,6 +60,12 @@ public class GameConfig implements java.io.Serializable{
 	private boolean anysdkshare ;	//启用 AnySDK分享
 	private boolean anysdklogin ;	//启用 AnySDK登录验证
 	
+	private boolean subsidy ;	//启用破产补助
+	private int subtimes ;		//破产补助次数
+	private int subgolds ;		//破产补助金额
+	private String submsg ;		//破产补助的提示消息
+	private String recmsg ;		//金币不足的提示，和破产补助提示 同时判断，如果还有破产补助，就不会提示这个
+	
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -271,5 +277,35 @@ public class GameConfig implements java.io.Serializable{
 
 	public void setAnysdklogin(boolean anysdklogin) {
 		this.anysdklogin = anysdklogin;
+	}
+	public boolean isSubsidy() {
+		return subsidy;
+	}
+	public void setSubsidy(boolean subsidy) {
+		this.subsidy = subsidy;
+	}
+	public int getSubtimes() {
+		return subtimes;
+	}
+	public void setSubtimes(int subtimes) {
+		this.subtimes = subtimes;
+	}
+	public int getSubgolds() {
+		return subgolds;
+	}
+	public void setSubgolds(int subgolds) {
+		this.subgolds = subgolds;
+	}
+	public String getSubmsg() {
+		return submsg;
+	}
+	public void setSubmsg(String submsg) {
+		this.submsg = submsg;
+	}
+	public String getRecmsg() {
+		return recmsg;
+	}
+	public void setRecmsg(String recmsg) {
+		this.recmsg = recmsg;
 	}
 }
