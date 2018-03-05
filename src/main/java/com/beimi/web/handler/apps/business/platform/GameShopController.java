@@ -91,12 +91,15 @@ public class GameShopController extends Handler{
     
     @RequestMapping("/update")
     @Menu(type="shop", subtype="wares")
-    public ModelAndView update(HttpServletRequest request ,@Valid Wares wares) {
+    public ModelAndView update(HttpServletRequest request ,@Valid Wares wares,  @RequestParam(value = "imageurl", required = false) MultipartFile imageurl) {
     	Wares temp = waresRes.findByIdAndOrgi(wares.getId(), super.getOrgi(request)) ;
     	if(temp != null){
-    		temp.setName(wares.getName());
-    		temp.setUpdatetime(new Date());
-    		temp.setOrgi(super.getOrgi(request));
+    		wares.setUpdatetime(new Date());
+    		wares.setOrgi(super.getOrgi(request));
+    		wares.setCreatetime(temp.getCreatetime());
+    		if(imageurl == null) {
+    			wares.setImageurl(temp.getImageurl());
+    		}
     		waresRes.save(wares) ;
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/apps/shop/wares.html?type="+wares.getWarestype()));
