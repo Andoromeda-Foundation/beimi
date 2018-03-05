@@ -32,9 +32,6 @@ public class GameShopController extends Handler{
 	@Autowired
 	private WaresRepository waresRes ;
 	
-	@Autowired
-	private SkuRepository skuRes ;
-	
 	@RequestMapping({"/wares"})
 	@Menu(type="shop", subtype="wares")
 	public ModelAndView account(ModelMap map , HttpServletRequest request , @Valid String type){
