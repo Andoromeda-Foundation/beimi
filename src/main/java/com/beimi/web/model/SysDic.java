@@ -32,7 +32,7 @@ public class SysDic  implements java.io.Serializable {
 	private String catetype ;				
 	private String memo ;					
 	private String creater;
-	private boolean haschild ;				//修改用处，改为 是否允许租户扩展 字典项目
+	private boolean haschild ;				//修改用处，改为启用还是禁用了
 	private boolean discode ;				//是否显示code
 	private Date createtime;
 	private Date updatetime;

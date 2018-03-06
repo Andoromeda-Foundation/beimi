@@ -12,17 +12,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.beimi.core.BMDataContext;
 import com.beimi.util.Menu;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.web.handler.Handler;
+import com.beimi.web.model.BeiMiDic;
 import com.beimi.web.model.SysDic;
 import com.beimi.web.model.Wares;
-import com.beimi.web.service.repository.jpa.SkuRepository;
 import com.beimi.web.service.repository.jpa.WaresRepository;
 
 @Controller
@@ -53,18 +51,24 @@ public class GameShopController extends Handler{
 			wares.setWarestype(type);
 			map.addAttribute("wares" , wares) ;
 			map.addAttribute("type" , type) ;
+			
+			SysDic dic = (SysDic) CacheHelper.getSystemCacheBean().getCacheObject(type, BMDataContext.SYSTEM_ORGI) ;
+			if(dic!=null) {
+				map.addAttribute("imagesList" , BeiMiDic.getInstance().getDic("com.dic.shop.warestype" , dic.getId())) ;
+			}
 		}
         return request(super.createRequestPageTempletResponse("/apps/business/platform/shop/wares/add"));
     }
     
     @RequestMapping("/save")
     @Menu(type="shop", subtype="wares")
-    public ModelAndView save(HttpServletRequest request ,@Valid Wares wares ,  @RequestParam(value = "imageurl", required = false) MultipartFile imageurl) {
+    public ModelAndView save(HttpServletRequest request ,@Valid Wares wares) {
     	wares.setOrgi(super.getOrgi(request));
     	wares.setCreater(super.getUser(request).getId());
     	wares.setCreatetime(new Date());
-    	wares.setImageurl("");
     	waresRes.save(wares) ;
+    	
+    	CacheHelper.getSystemCacheBean().delete(BMDataContext.BEIMI_GAME_SHOP_WARES , super.getOrgi(request));
     	return request(super.createRequestPageTempletResponse("redirect:/apps/shop/wares.html?type="+wares.getWarestype()));
     }
     
@@ -75,6 +79,7 @@ public class GameShopController extends Handler{
     	Wares wares= waresRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
     	if(wares!=null){
 	    	waresRes.delete(wares) ;
+	    	CacheHelper.getSystemCacheBean().delete(BMDataContext.BEIMI_GAME_SHOP_WARES , super.getOrgi(request));
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/apps/shop/wares.html?type="+wares.getWarestype()));
     }
@@ -82,22 +87,25 @@ public class GameShopController extends Handler{
     @RequestMapping("/edit")
     @Menu(type="shop", subtype="wares")
     public ModelAndView edit(ModelMap map ,HttpServletRequest request , @Valid String id) {
-    	map.addAttribute("wares", waresRes.findByIdAndOrgi(id, super.getOrgi(request))) ;
+    	Wares wares = waresRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
+    	map.addAttribute("wares", wares) ;
+    	SysDic dic = (SysDic) CacheHelper.getSystemCacheBean().getCacheObject(wares.getWarestype(), BMDataContext.SYSTEM_ORGI) ;
+		if(dic!=null) {
+			map.addAttribute("imagesList" , BeiMiDic.getInstance().getDic("com.dic.shop.warestype" , dic.getId())) ;
+		}
         return  request(super.createRequestPageTempletResponse("/apps/business/platform/shop/wares/edit")) ;
     }
     
     @RequestMapping("/update")
     @Menu(type="shop", subtype="wares")
-    public ModelAndView update(HttpServletRequest request ,@Valid Wares wares,  @RequestParam(value = "imageurl", required = false) MultipartFile imageurl) {
+    public ModelAndView update(HttpServletRequest request ,@Valid Wares wares) {
     	Wares temp = waresRes.findByIdAndOrgi(wares.getId(), super.getOrgi(request)) ;
     	if(temp != null){
     		wares.setUpdatetime(new Date());
     		wares.setOrgi(super.getOrgi(request));
     		wares.setCreatetime(temp.getCreatetime());
-    		if(imageurl == null) {
-    			wares.setImageurl(temp.getImageurl());
-    		}
     		waresRes.save(wares) ;
+    		CacheHelper.getSystemCacheBean().delete(BMDataContext.BEIMI_GAME_SHOP_WARES , super.getOrgi(request));
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/apps/shop/wares.html?type="+wares.getWarestype()));
     }

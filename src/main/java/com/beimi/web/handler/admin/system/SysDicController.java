@@ -206,6 +206,7 @@ public class SysDicController extends Handler{
     		sysDic.setDiscode(dic.isDiscode());
     		sysDic.setDescription(dic.getDescription());
 			sysDic.setDefaultvalue(dic.isDefaultvalue());
+			sysDic.setHaschild(dic.isHaschild());
     		sysDicRes.save(sysDic) ;
     		
     		reloadSysDicItem(sysDic, request);

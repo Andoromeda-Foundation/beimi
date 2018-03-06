@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.fastjson.JSON;
 import com.beimi.core.BMDataContext;
 import com.beimi.core.engine.game.ActionTaskUtils;
+import com.beimi.core.engine.game.Message;
 import com.beimi.util.GameUtils;
 import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
@@ -348,6 +349,40 @@ public class GameEventHandler
 			}
 		}
     }
+    
+    //杂七杂八的指令，混合到一起
+    @OnEvent(value = "command")   
+    public void onCommand(SocketIOClient client , String data)  
+    {  
+    	Command command = JSON.parseObject(data , Command.class) ;
+    	Message message = null ;
+		if(command!=null && !StringUtils.isBlank(command.getToken())){
+			Token userToken = (Token) CacheHelper.getApiUserCacheBean().getCacheObject(command.getToken(), BMDataContext.SYSTEM_ORGI) ;
+			if(userToken!=null){
+				switch(command.getCommand()){
+					case "subsidy" :message = GameUtils.subsidyPlayerClient(userToken.getUserid(), userToken.getOrgi()) ; break ;
+				}
+			}
+			if(message!=null) {
+				client.sendEvent(message.getCommand() , message);
+			}
+		}
+    }
+    
+    //聊天
+    @OnEvent(value = "message")   
+    public void onMessage(SocketIOClient client , String data)  
+    {  
+    	BeiMiClient beiMiClient = NettyClients.getInstance().getClient(client.getSessionId().toString()) ;
+    	String token = beiMiClient.getToken();
+		if(!StringUtils.isBlank(token)){
+			Token userToken = (Token) CacheHelper.getApiUserCacheBean().getCacheObject(token, BMDataContext.SYSTEM_ORGI) ;
+			if(userToken!=null){
+				GameUtils.updatePlayerClientStatus(beiMiClient.getUserid(), beiMiClient.getOrgi(), BMDataContext.PlayerTypeEnum.LEAVE.toString());
+			}
+		}
+    }
+    
     
   //抢地主事件
     @OnEvent(value = "searchroom")   

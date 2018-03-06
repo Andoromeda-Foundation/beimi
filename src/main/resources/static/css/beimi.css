@@ -3892,3 +3892,11 @@ select{
 .playway-options .playway-four-col .layui-form-radio span {
     width: 65px !important;
 }
+.gameimage{
+    border-radius: 50%;
+    color: #FFFFFF;
+    height:36px;
+    padding: 0px;
+    font-size: 20px;
+    float:left;
+}

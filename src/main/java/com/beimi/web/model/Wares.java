@@ -35,6 +35,8 @@ public class Wares implements java.io.Serializable{
 	 */
 	private int price ;			//建议价格 ， 由SKU定价和库存
 	private int stock ;
+	
+	private int quantity ;		//兑换数量，1钻石兑换 5000 金币数量
 	private String imageurl ;
 	private String warestype;
 	
@@ -206,5 +208,10 @@ public class Wares implements java.io.Serializable{
 	public void setPayment(String payment) {
 		this.payment = payment;
 	}
-	
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 }

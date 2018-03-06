@@ -29,6 +29,8 @@ public class BMDataContext {
 	
 	public static final String BEIMI_GAME_PLAYWAY = "game_playway";
 	
+	public static final String BEIMI_GAME_SHOP_WARES = "game_shop_wares";
+	
 	public static final String BEIMI_SYSTEM_AUTH_DIC = "com.dic.auth.resource";
 
 	public static final String BEIMI_SYSTEM_ROOM = "room" ;
@@ -163,6 +165,13 @@ public class BMDataContext {
 		HU,
 		CHI,
 		GUO;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum CommandMessageType{
+		SUBSIDY;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}

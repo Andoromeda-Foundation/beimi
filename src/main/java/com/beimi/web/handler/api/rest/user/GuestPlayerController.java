@@ -54,6 +54,7 @@ public class GuestPlayerController extends Handler{
     public ResponseEntity<ResultData> guest(HttpServletRequest request , @Valid String token) {
 		PlayUserClient playUserClient = null ;
 		Token userToken = null ;
+		
 		if(!StringUtils.isBlank(token)){
 			userToken = tokenESRes.findById(token) ;
 			if(userToken != null && !StringUtils.isBlank(userToken.getUserid()) && userToken.getExptime()!=null && userToken.getExptime().after(new Date())){

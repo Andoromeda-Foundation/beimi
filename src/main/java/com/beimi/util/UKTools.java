@@ -1,7 +1,5 @@
 package com.beimi.util;
 
-import io.netty.handler.codec.http.HttpHeaders;
-
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -30,8 +28,6 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import net.coobird.thumbnailator.Thumbnails;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConversionException;
@@ -62,11 +58,16 @@ import com.beimi.web.model.Secret;
 import com.beimi.web.model.SystemConfig;
 import com.beimi.web.model.Template;
 import com.beimi.web.model.User;
+import com.beimi.web.model.Wares;
 import com.beimi.web.service.repository.jpa.AttachmentRepository;
 import com.beimi.web.service.repository.jpa.SecretRepository;
 import com.beimi.web.service.repository.jpa.SystemConfigRepository;
 import com.beimi.web.service.repository.jpa.TemplateRepository;
+import com.beimi.web.service.repository.jpa.WaresRepository;
 import com.lmax.disruptor.dsl.Disruptor;
+
+import io.netty.handler.codec.http.HttpHeaders;
+import net.coobird.thumbnailator.Thumbnails;
 
 
 public class UKTools {
@@ -75,6 +76,8 @@ public class UKTools {
 	public static SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") ;
 	
 	public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd") ;
+	
+	public static SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd") ;
 	
 	public static SimpleDateFormat timeRangeDateFormat = new SimpleDateFormat("HH:mm");
 	
@@ -272,6 +275,10 @@ public class UKTools {
         todayStart.set(Calendar.SECOND, 0);  
         todayStart.set(Calendar.MILLISECOND, 0);  
         return todayStart.getTime();  
+	}
+	
+	public static String getDay(){
+		return dayFormat.format(new Date()) ;
 	}
 	
 	/**
@@ -718,6 +725,21 @@ public class UKTools {
 			systemConfig = systemConfigRes.findByOrgi(BMDataContext.SYSTEM_ORGI) ;
 		}
 		return systemConfig;
+	}
+	
+	/**
+	 * 获取系统配置
+	 * @return
+	 */
+	public static List<Wares> getWaresList(){
+		@SuppressWarnings("unchecked")
+		List<Wares> waresList = (List<Wares>) CacheHelper.getSystemCacheBean().getCacheObject(BMDataContext.BEIMI_GAME_SHOP_WARES, BMDataContext.SYSTEM_ORGI) ;
+		if(waresList == null){
+			WaresRepository waresRes = BMDataContext.getContext().getBean(WaresRepository.class) ;
+			waresList = waresRes.findByOrgi(BMDataContext.SYSTEM_ORGI) ;
+			CacheHelper.getSystemCacheBean().put(BMDataContext.BEIMI_GAME_SHOP_WARES , waresList , BMDataContext.SYSTEM_ORGI);
+		}
+		return waresList;
 	}
 	
 	public static Template getTemplate(String id){

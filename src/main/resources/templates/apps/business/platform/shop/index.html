@@ -33,7 +33,7 @@
 							<tr>
 							  <th>名称</th>
 							  <th>分类</th>
-							  <th>价格</th>
+							  <th>价格/数量</th>
 							  <th>支付方式</th>
 							  <th>状态</th>
 							  <th>序号</th>
@@ -47,7 +47,9 @@
 							<tr>
 							  <td>
 									<a href="">
-										<i class="layui-icon headimg">&#xe612;</i>
+										<i class="gameimage">
+											<img src="/images/game/${wares.imageurl!''}.png" style="width:36px;height:36px;">
+										</i>
 										<div style="margin-left:50px;margin-top:0px;">
 											${wares.name!''}
 											<#if wares.datastatus == true><i style="color:red;">（已删除）</i></#if>
@@ -64,7 +66,7 @@
 									
 							  </td>
 							  <td>${uKeFuDic[wares.warestype!''].name!''} </td>
-							  <td>${wares.price!''}</td>
+							  <td>${wares.price!''}/${wares.quantity!''}</td>
 							  <td>${uKeFuDic[wares.payment!''].name!''} </td>
 							  <td>
 							  	  <#if wares.status?? && wares.status == "on">上架</#if>

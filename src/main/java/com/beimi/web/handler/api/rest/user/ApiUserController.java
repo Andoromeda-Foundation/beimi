@@ -16,7 +16,6 @@ import com.beimi.web.handler.Handler;
 import com.beimi.web.model.PlayUser;
 import com.beimi.web.model.ResultData;
 import com.beimi.web.service.repository.es.PlayUserESRepository;
-import com.beimi.web.service.repository.jpa.PlayUserRepository;
 
 @RestController
 @RequestMapping("/api/player")
@@ -24,9 +23,6 @@ public class ApiUserController extends Handler{
 
 	@Autowired
 	private PlayUserESRepository playUserESRes;
-	
-	@Autowired
-	private PlayUserRepository playUserRes ;
 
 	@RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<ResultData> get(HttpServletRequest request , @RequestParam String id) {
@@ -36,5 +32,4 @@ public class ApiUserController extends Handler{
     	}
     	return new ResponseEntity<>(new ResultData( player!=null , player != null ? MessageEnum.USER_GET_SUCCESS : MessageEnum.USER_NOT_EXIST, player), HttpStatus.OK);
     }
-	
 }
