@@ -190,7 +190,7 @@
 													</div>
 													<div class="col-lg-4" style="text-align:right;">
 														<select name="subtimes">
-															<#list 1..10 as times>
+															<#list 1..100 as times>
 															<option value="${times}" <#if gameConfig.subtimes == times>selected="selected"</#if>>${times}次</option>
 															</#list>
 														</select>     
@@ -208,17 +208,41 @@
 												</div>
 												<div class="row subsidy" style="margin-top:20px;<#if gameConfig?? && gameConfig.subsidy><#else>display:none;</#if>">
 													<div class="col-lg-8">
-														<p>破产补助的提示消息</p>
-														<p style="color:#888888;font-size:13px;margin-top:10px;">客户端弹出提示破产补助的提示消息</p>
+														<p>允许申请破产补助的提示消息</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;">启用破产补助的情况下，客户端弹出提示破产补助的提示消息</p>
 													</div>
 													<div class="col-lg-4" style="text-align:right;">
 														<input type="text" name="submsg" id="submsg" value="${gameConfig.submsg!''}" autocomplete="off" class="layui-input" maxlength="100">
 													</div>
 												</div>
+												<div class="row subsidy" style="margin-top:20px;<#if gameConfig?? && gameConfig.subsidy><#else>display:none;</#if>">
+													<div class="col-lg-8">
+														<p>玩家的破产补助次数用完后的提示消息</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;">破产补助次数用完以后，玩家再次点击破产补助按钮的提示消息</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="text" name="subovermsg" id="subovermsg" value="${gameConfig.subovermsg!'您今天的救济次数已用完，请充值。'}" autocomplete="off" class="layui-input" maxlength="100">
+													</div>
+												</div>
 											</div>
 											
 											<div class="ukefu-webim-prop">
-												<div class="ukefu-webim-tl" style="clear:both;">8、金币不足时进入充值的提示消息</div>
+												<div class="ukefu-webim-tl" style="clear:both;">8、未启用破产补助的提示消息</div>
+												<div class="box-item">
+													<div class="row">
+														<div class="col-lg-8">
+															<p>未启用破产补助，玩家点击“救济”按钮的提示消息</p>
+															<p style="color:#888888;font-size:13px;margin-top:10px;">未启用破产补助功能，需要给出提示消息</p>
+														</div>
+														<div class="col-lg-4" style="text-align:right;">
+															<input type="text" name="nosubmsg" maxlength="100" value="<#if gameConfig && gameConfig.nosubmsg??>${gameConfig.nosubmsg}<#else>请，您没有救济次数啦！</#if>" autocomplete="off" class="layui-input">
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											<div class="ukefu-webim-prop">
+												<div class="ukefu-webim-tl" style="clear:both;">9、金币不足时进入充值的提示消息</div>
 												<div class="box-item">
 													<div class="row">
 														<div class="col-lg-8">

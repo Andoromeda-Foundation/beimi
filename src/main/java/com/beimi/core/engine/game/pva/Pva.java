@@ -17,7 +17,7 @@ public abstract class Pva{
 	/**
 	 * 充值，返回当前账户余额 , 充值后的业务逻辑处理，如果当前有未处理的订单，需要优先处理
 	 * @param playuser
-	 * @param action , 收入类型 ， 1、充值，2、兑换、3、赢了，4、赠送，6、抽奖，7、接受赠与
+	 * @param action , 收入类型 ， 1、充值，2、兑换、3、赢了，4、赠送，6、抽奖，7、接受赠与，8、破产补助
 	 * @param amount
 	 * @return
 	 */

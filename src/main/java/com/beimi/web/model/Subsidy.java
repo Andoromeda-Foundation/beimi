@@ -38,9 +38,26 @@ public class Subsidy implements UserEvent ,Message , java.io.Serializable{
 	private String subsidytype ;	//补贴类型  ， 以后扩展备用
 	private int frequency ;			//当天第几次补贴 
 	
+	private boolean enable ;		//是否启用
+	private int subtimes ;			//次数
+	private int subgolds ;			//金币
+	
+	private int balance ;	//余额
+	private int amount ;	//改变的金额
+	private String action ;	//操作类型
+	
+	private String result ;
+	private String token ;
+	
 	private String subsidyruleid ;	//补贴规则ID ， 以后扩展备用
 	
 	
+	public Subsidy() {}
+	public Subsidy(String command , String result , String token) {
+		this.command = command ;
+		this.result = result ;
+		this.token = token ;
+	}
 	
 	@Id
 	@Column(length = 32)
@@ -129,5 +146,53 @@ public class Subsidy implements UserEvent ,Message , java.io.Serializable{
 	}
 	public void setCommand(String command) {
 		this.command = command;
+	}
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
+	public boolean isEnable() {
+		return enable;
+	}
+	public void setEnable(boolean enable) {
+		this.enable = enable;
+	}
+	public int getSubtimes() {
+		return subtimes;
+	}
+	public void setSubtimes(int subtimes) {
+		this.subtimes = subtimes;
+	}
+	public int getSubgolds() {
+		return subgolds;
+	}
+	public void setSubgolds(int subgolds) {
+		this.subgolds = subgolds;
+	}
+	public int getBalance() {
+		return balance;
+	}
+	public void setBalance(int balance) {
+		this.balance = balance;
+	}
+	public int getAmount() {
+		return amount;
+	}
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
 	}
 }

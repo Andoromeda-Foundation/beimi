@@ -16,14 +16,15 @@ import org.springframework.data.domain.Sort;
 
 import com.beimi.config.web.model.Game;
 import com.beimi.core.BMDataContext;
-import com.beimi.core.engine.game.ActionTaskUtils;
 import com.beimi.core.engine.game.BeiMiGame;
+import com.beimi.core.engine.game.Message;
 import com.beimi.core.engine.game.iface.ChessGame;
 import com.beimi.core.engine.game.impl.DizhuGame;
 import com.beimi.core.engine.game.impl.MaJiangGame;
 import com.beimi.core.engine.game.model.MJCardMessage;
 import com.beimi.core.engine.game.model.Playway;
 import com.beimi.core.engine.game.model.Type;
+import com.beimi.core.engine.game.pva.PVAOperatorResult;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.rules.model.Action;
 import com.beimi.util.rules.model.Board;
@@ -44,6 +45,7 @@ import com.beimi.web.service.repository.es.SubsidyESRepository;
 import com.beimi.web.service.repository.jpa.GamePlaywayGroupItemRepository;
 import com.beimi.web.service.repository.jpa.GamePlaywayGroupRepository;
 import com.beimi.web.service.repository.jpa.GamePlaywayRepository;
+import com.corundumstudio.socketio.SocketIOClient;
 
 public class GameUtils {
 	
@@ -107,32 +109,64 @@ public class GameUtils {
 			}
 		}
 	}
-	public static Subsidy subsidyPlayerClient(String userid , String orgi) {
-		Subsidy subsidy = null ;
-		PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userid, orgi) ;
+	public static Message subsidyPlayerClient(SocketIOClient client , PlayUserClient playUser , String orgi) {
+		Message message = null ;
 		if(playUser!=null){
 			GameConfig gameConfig = (GameConfig) CacheHelper.getSystemCacheBean().getCacheObject(BMDataContext.getGameConfig(orgi) , orgi);
+			int score = 0  ;
+			Subsidy subsidy = new Subsidy();
 			if(gameConfig!=null && gameConfig.isSubsidy()) {
+				subsidy.setEnable(gameConfig.isSubsidy());
+				subsidy.setSubgolds(gameConfig.getSubgolds());
+				subsidy.setSubtimes(gameConfig.getSubtimes());
+				subsidy.setToken(playUser.getId());
 				/**
 				 * 启用了 破产补助功能，需要校验改玩家当天是否还有申请破产补助的资格 ， 无论是否有资格，都需要给玩家一个回复消息，
 				 * 如果有申请资格，需要查询破产补助记录表，按天，则直接补助，并通知玩家 PVA信息更新，如果没有资格，则更新PVA信息，并给出提示消息
 				 */
 				
 				SubsidyESRepository subsidyRes = BMDataContext.getContext().getBean(SubsidyESRepository.class) ;
-				int times = subsidyRes.countByPlayeridAndOrgiAndDay(userid, orgi, UKTools.getDay())  ;
-				if(times < gameConfig.getSubtimes()) { //允许补助
-					subsidy = new Subsidy();
+				int times = subsidyRes.countByPlayeridAndOrgiAndDay(playUser.getId(), orgi, UKTools.getDay())  ;
+				if(times <= gameConfig.getSubtimes()) { //允许补助
 					subsidy.setCreatetime(new Date());
 					subsidy.setDay(UKTools.getDay());
-					subsidy.setPlayerid(userid);
+					subsidy.setPlayerid(playUser.getId());
 					subsidy.setOrgi(orgi);
 					subsidy.setCommand(BMDataContext.CommandMessageType.SUBSIDY.toString());
 					subsidy.setFrequency(times+1);
-					UKTools.published(subsidy, subsidyRes);
+					subsidy.setSubsidy(gameConfig.getSubgolds());
+					
+					message = subsidy ;
+					score = subsidy.getSubsidy() ;
+					/**
+					 * 需要记录下交互日志 ， 更新玩家的 PVA消息
+					 */
+					PVAOperatorResult result = PvaTools.getGoldCoins().income(playUser , BMDataContext.PVAConsumeActionEnum.SUBSIDY.toString(), score) ;
+					if(result!=null) {
+						subsidy.setAction(result.getAction());
+						subsidy.setAmount(result.getAmount());
+						subsidy.setBalance(result.getBalance());
+						
+						UKTools.published(subsidy, subsidyRes);
+					}
+				}else {
+					message = subsidy ;
+					subsidy.setCommand(BMDataContext.CommandMessageType.SUBSIDYFAILD.toString());
+					subsidy.setResult(gameConfig.getSubovermsg());
 				}
 			}
+			if(message == null){
+				message = subsidy ;
+				subsidy.setEnable(false);
+				subsidy.setCommand(BMDataContext.CommandMessageType.SUBSIDYFAILD.toString());
+				subsidy.setResult(gameConfig.getNosubmsg());
+			}
+			/**
+			 * 发送 破产补助的消息
+			 */
+			client.sendEvent(message.getCommand() , message);
 		}
-		return subsidy;
+		return message;
 	}
 	/**
 	 * 创建一个AI玩家

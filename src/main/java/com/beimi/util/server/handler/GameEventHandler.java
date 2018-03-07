@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.fastjson.JSON;
 import com.beimi.core.BMDataContext;
 import com.beimi.core.engine.game.ActionTaskUtils;
-import com.beimi.core.engine.game.Message;
 import com.beimi.util.GameUtils;
 import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
@@ -355,16 +354,13 @@ public class GameEventHandler
     public void onCommand(SocketIOClient client , String data)  
     {  
     	Command command = JSON.parseObject(data , Command.class) ;
-    	Message message = null ;
 		if(command!=null && !StringUtils.isBlank(command.getToken())){
 			Token userToken = (Token) CacheHelper.getApiUserCacheBean().getCacheObject(command.getToken(), BMDataContext.SYSTEM_ORGI) ;
+			PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userToken.getUserid(), userToken.getOrgi()) ;
 			if(userToken!=null){
 				switch(command.getCommand()){
-					case "subsidy" :message = GameUtils.subsidyPlayerClient(userToken.getUserid(), userToken.getOrgi()) ; break ;
+					case "subsidy" : GameUtils.subsidyPlayerClient(client , playUser, userToken.getOrgi()) ; break ;
 				}
-			}
-			if(message!=null) {
-				client.sendEvent(message.getCommand() , message);
 			}
 		}
     }

@@ -171,7 +171,9 @@ public class BMDataContext {
 	}
 	
 	public enum CommandMessageType{
-		SUBSIDY;
+		SUBSIDY,
+		SUBSIDYFAILD,
+		PVACHANGE;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}
@@ -328,7 +330,8 @@ public class BMDataContext {
 		LOST,
 		ESCAPE,
 		DEDUCTION,
-		SEND;
+		SEND,
+		SUBSIDY;
 		
 		public String toString(){
 			return super.toString().toLowerCase() ;

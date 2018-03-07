@@ -65,6 +65,9 @@ public class GameConfig implements java.io.Serializable{
 	private int subgolds ;		//破产补助金额
 	private String submsg ;		//破产补助的提示消息
 	private String recmsg ;		//金币不足的提示，和破产补助提示 同时判断，如果还有破产补助，就不会提示这个
+	private String subovermsg;	//补助次数用完的提示消息	
+	
+	private String nosubmsg ;	//未启用破产补助的提示消息
 	
 	@Id
 	@Column(length = 32)
@@ -307,5 +310,17 @@ public class GameConfig implements java.io.Serializable{
 	}
 	public void setRecmsg(String recmsg) {
 		this.recmsg = recmsg;
+	}
+	public String getSubovermsg() {
+		return subovermsg;
+	}
+	public void setSubovermsg(String subovermsg) {
+		this.subovermsg = subovermsg;
+	}
+	public String getNosubmsg() {
+		return nosubmsg;
+	}
+	public void setNosubmsg(String nosubmsg) {
+		this.nosubmsg = nosubmsg;
 	}
 }
