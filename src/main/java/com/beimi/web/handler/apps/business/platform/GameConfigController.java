@@ -72,6 +72,7 @@ public class GameConfigController extends Handler{
 			map.addAttribute("gameConfig", gameConfigList.get(0)) ;
 		}
 		map.addAttribute("gameModelList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_TYPE_DIC)) ;
+		map.addAttribute("welfareTypeList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_WELFARETYPE_DIC)) ;
 		return request(super.createAppsTempletResponse("/apps/business/platform/config/game"));
 	}
 	

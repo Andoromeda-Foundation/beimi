@@ -255,6 +255,25 @@
 													</div>
 												</div>
 											</div>
+											
+											<div class="ukefu-webim-prop">
+												<div class="ukefu-webim-tl" style="clear:both;">9、启用游戏福利中心的类型</div>
+												<div class="box-item">
+													<div class="row">
+														<div class="col-lg-12">
+															<p>游戏福利中心， 启用后在玩家界面上可以进入，启用后玩家才能给看到福利选项</p>
+															<p style="color:#888888;font-size:13px;margin-top:10px;"></p>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-lg-12">
+															<#list welfareTypeList as welfareType>
+															<input type="checkbox" name="welfare" title="${welfareType.name!''}" value="${welfareType.code!''}" <#if gameConfig.welfare?index_of(welfareType.code) gte 0 || (!gameConfig.welfare?? && welfareType.defaultvalue == true)>checked</#if>>
+															</#list>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>

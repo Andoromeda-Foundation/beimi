@@ -34,6 +34,8 @@ public class ResultData implements java.io.Serializable{
 	
 	private int lefttimes ;		//当天剩余补助次数
 	
+	private String welfare ;	//启用的活动列表
+	
 	private Token token ;
 	private List<BeiMiGame> games ;		//游戏配置里选择的游戏类型
 	
@@ -180,4 +182,13 @@ public class ResultData implements java.io.Serializable{
 	public void setRecmsg(String recmsg) {
 		this.recmsg = recmsg;
 	}
+
+	public String getWelfare() {
+		return welfare;
+	}
+
+	public void setWelfare(String welfare) {
+		this.welfare = welfare;
+	}
+	
 }

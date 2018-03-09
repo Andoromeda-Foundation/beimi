@@ -119,6 +119,11 @@ public class GuestPlayerController extends Handler{
 			playerResultData.setLefttimes(gameConfig.getSubtimes());	//需要从数据库中查询当天剩余次数
 			
 			/**
+			 * 启用的游戏类型
+			 */
+			playerResultData.setWelfare(gameConfig.getWelfare());
+			
+			/**
 			 * 封装 游戏对象，发送到客户端
 			 */
 			/**

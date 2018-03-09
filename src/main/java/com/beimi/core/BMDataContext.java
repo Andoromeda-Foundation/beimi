@@ -13,6 +13,7 @@ public class BMDataContext {
 	public static final String DEFAULT_TYPE = "default"	;		//默认分类代码
 	public static final String BEIMI_SYSTEM_DIC = "com.dic.system.template";
 	public static final String BEIMI_SYSTEM_GAME_TYPE_DIC = "com.dic.game.type";
+	public static final String BEIMI_SYSTEM_GAME_WELFARETYPE_DIC = "com.dic.game.welfare.type";
 	public static final String BEIMI_SHOP_WARES_TYPE_DIC = "com.dic.shop.warestype";
 	public static final String BEIMI_SYSTEM_GAME_SCENE_DIC = "com.dic.scene.item";
 

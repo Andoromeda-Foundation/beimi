@@ -69,6 +69,8 @@ public class GameConfig implements java.io.Serializable{
 	
 	private String nosubmsg ;	//未启用破产补助的提示消息
 	
+	private String welfare ;	//启用的活动列表
+	
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -322,5 +324,11 @@ public class GameConfig implements java.io.Serializable{
 	}
 	public void setNosubmsg(String nosubmsg) {
 		this.nosubmsg = nosubmsg;
+	}
+	public String getWelfare() {
+		return welfare;
+	}
+	public void setWelfare(String welfare) {
+		this.welfare = welfare;
 	}
 }
