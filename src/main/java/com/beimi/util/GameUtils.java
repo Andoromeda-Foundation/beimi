@@ -39,9 +39,9 @@ import com.beimi.web.model.GamePlaywayGroupItem;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUser;
 import com.beimi.web.model.PlayUserClient;
-import com.beimi.web.model.Subsidy;
+import com.beimi.web.model.ActRecord;
 import com.beimi.web.model.SysDic;
-import com.beimi.web.service.repository.es.SubsidyESRepository;
+import com.beimi.web.service.repository.es.ActRecordESRepository;
 import com.beimi.web.service.repository.jpa.GamePlaywayGroupItemRepository;
 import com.beimi.web.service.repository.jpa.GamePlaywayGroupRepository;
 import com.beimi.web.service.repository.jpa.GamePlaywayRepository;
@@ -114,52 +114,47 @@ public class GameUtils {
 		if(playUser!=null){
 			GameConfig gameConfig = (GameConfig) CacheHelper.getSystemCacheBean().getCacheObject(BMDataContext.getGameConfig(orgi) , orgi);
 			int score = 0  ;
-			Subsidy subsidy = new Subsidy();
+			ActRecord actRecord = new ActRecord();
 			if(gameConfig!=null && gameConfig.isSubsidy()) {
-				subsidy.setEnable(gameConfig.isSubsidy());
-				subsidy.setSubgolds(gameConfig.getSubgolds());
-				subsidy.setSubtimes(gameConfig.getSubtimes());
-				subsidy.setToken(playUser.getId());
+				actRecord.setEnable(gameConfig.isSubsidy());
+				actRecord.setSubgolds(gameConfig.getSubgolds());
+				actRecord.setSubtimes(gameConfig.getSubtimes());
+				actRecord.setToken(playUser.getId());
 				/**
 				 * 启用了 破产补助功能，需要校验改玩家当天是否还有申请破产补助的资格 ， 无论是否有资格，都需要给玩家一个回复消息，
 				 * 如果有申请资格，需要查询破产补助记录表，按天，则直接补助，并通知玩家 PVA信息更新，如果没有资格，则更新PVA信息，并给出提示消息
 				 */
 				
-				SubsidyESRepository subsidyRes = BMDataContext.getContext().getBean(SubsidyESRepository.class) ;
-				int times = subsidyRes.countByPlayeridAndOrgiAndDay(playUser.getId(), orgi, UKTools.getDay())  ;
+				ActRecordESRepository actRecordRes = BMDataContext.getContext().getBean(ActRecordESRepository.class) ;
+				int times = actRecordRes.countByPlayeridAndOrgiAndDayAndRectype(playUser.getId(), orgi, UKTools.getDay() , BMDataContext.ActRecordType.SUBSIDY.toString())  ;
 				if(times <= gameConfig.getSubtimes()) { //允许补助
-					subsidy.setCreatetime(new Date());
-					subsidy.setDay(UKTools.getDay());
-					subsidy.setPlayerid(playUser.getId());
-					subsidy.setOrgi(orgi);
-					subsidy.setCommand(BMDataContext.CommandMessageType.SUBSIDY.toString());
-					subsidy.setFrequency(times+1);
-					subsidy.setSubsidy(gameConfig.getSubgolds());
+					actRecord = createActRecord(playUser, BMDataContext.ActRecordType.SUBSIDY.toString(), orgi, times+1, gameConfig.getSubgolds()) ;
+					actRecord.setCommand(BMDataContext.CommandMessageType.SUBSIDY.toString());
 					
-					message = subsidy ;
-					score = subsidy.getSubsidy() ;
+					message = actRecord ;
+					score = actRecord.getScore() ;
 					/**
 					 * 需要记录下交互日志 ， 更新玩家的 PVA消息
 					 */
 					PVAOperatorResult result = PvaTools.getGoldCoins().income(playUser , BMDataContext.PVAConsumeActionEnum.SUBSIDY.toString(), score) ;
 					if(result!=null) {
-						subsidy.setAction(result.getAction());
-						subsidy.setAmount(result.getAmount());
-						subsidy.setBalance(result.getBalance());
+						actRecord.setAction(result.getAction());
+						actRecord.setAmount(result.getAmount());
+						actRecord.setBalance(result.getBalance());
 						
-						UKTools.published(subsidy, subsidyRes);
+						UKTools.published(actRecord, actRecordRes);
 					}
 				}else {
-					message = subsidy ;
-					subsidy.setCommand(BMDataContext.CommandMessageType.SUBSIDYFAILD.toString());
-					subsidy.setResult(gameConfig.getSubovermsg());
+					message = actRecord ;
+					actRecord.setCommand(BMDataContext.CommandMessageType.SUBSIDYFAILD.toString());
+					actRecord.setResult(gameConfig.getSubovermsg());
 				}
 			}
 			if(message == null){
-				message = subsidy ;
-				subsidy.setEnable(false);
-				subsidy.setCommand(BMDataContext.CommandMessageType.SUBSIDYFAILD.toString());
-				subsidy.setResult(gameConfig.getNosubmsg());
+				message = actRecord ;
+				actRecord.setEnable(false);
+				actRecord.setCommand(BMDataContext.CommandMessageType.SUBSIDYFAILD.toString());
+				actRecord.setResult(gameConfig.getNosubmsg());
 			}
 			/**
 			 * 发送 破产补助的消息
@@ -167,6 +162,27 @@ public class GameUtils {
 			client.sendEvent(message.getCommand() , message);
 		}
 		return message;
+	}
+	/**
+	 * 创建事件
+	 * @param playUser
+	 * @param recType
+	 * @param orgi
+	 * @param times
+	 * @param score
+	 * @return
+	 */
+	public static ActRecord createActRecord(PlayUserClient playUser  , String recType , String orgi , int times , int score) {
+		ActRecord actRecord = new ActRecord();
+		actRecord.setCreatetime(new Date());
+		actRecord.setDay(UKTools.getDay());
+		actRecord.setPlayerid(playUser.getId());
+		actRecord.setOrgi(orgi);
+		actRecord.setFrequency(times);
+		actRecord.setScore(score);
+			
+		actRecord.setRectype(recType);	//记录类型 ， 每天能够 领取的 补贴 次数
+		return actRecord ;
 	}
 	/**
 	 * 创建一个AI玩家

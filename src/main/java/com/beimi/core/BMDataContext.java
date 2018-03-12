@@ -141,6 +141,18 @@ public class BMDataContext {
 		}
 	}
 	
+	public enum ActRecordType{
+		SUBSIDY,	//补贴
+		TURN,		//转盘
+		SIGN,		//签到
+		LOGIN;		//连续登录
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	
 	public enum ConfigNames{
 		GAMECONFIG,
 		AICONFIG,

@@ -15,11 +15,11 @@ import com.beimi.core.engine.game.Message;
 import com.beimi.util.UKTools;
 import com.beimi.util.event.UserEvent;
 
-@Document(indexName = "beimi", type = "bm_game_subsidy")
+@Document(indexName = "beimi", type = "bm_game_actrecord")
 @Entity
-@Table(name = "bm_game_subsidy")
+@Table(name = "bm_game_actrecord")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class Subsidy implements UserEvent ,Message , java.io.Serializable{
+public class ActRecord implements UserEvent ,Message , java.io.Serializable{
 	private static final long serialVersionUID = 1L;
     
 	private String id = UKTools.getUUID();                   //主键
@@ -31,16 +31,16 @@ public class Subsidy implements UserEvent ,Message , java.io.Serializable{
 	private Date createtime ;
 	private String gametype ;
 	private String device;
-	private int subsidy;
+	private int score;
 	private String day ;
 	private String hour ;
 	private String timeslot ;		//补贴时间段 ， 以后扩展备用
-	private String subsidytype ;	//补贴类型  ， 以后扩展备用
+	private String rectype ;	//补贴类型  ， 以后扩展备用
 	private int frequency ;			//当天第几次补贴 
 	
-	private boolean enable ;		//是否启用
-	private int subtimes ;			//次数
-	private int subgolds ;			//金币
+	private boolean enable ;		//是否补贴 
+	private int subtimes ;			//补贴次数
+	private int subgolds ;			//补贴金币
 	
 	private int balance ;	//余额
 	private int amount ;	//改变的金额
@@ -49,11 +49,11 @@ public class Subsidy implements UserEvent ,Message , java.io.Serializable{
 	private String result ;
 	private String token ;
 	
-	private String subsidyruleid ;	//补贴规则ID ， 以后扩展备用
+	private String ruleid ;	//补贴规则ID ， 以后扩展备用
 	
 	
-	public Subsidy() {}
-	public Subsidy(String command , String result , String token) {
+	public ActRecord() {}
+	public ActRecord(String command , String result , String token) {
 		this.command = command ;
 		this.result = result ;
 		this.token = token ;
@@ -99,12 +99,7 @@ public class Subsidy implements UserEvent ,Message , java.io.Serializable{
 	public void setDevice(String device) {
 		this.device = device;
 	}
-	public int getSubsidy() {
-		return subsidy;
-	}
-	public void setSubsidy(int subsidy) {
-		this.subsidy = subsidy;
-	}
+	
 	public String getDay() {
 		return day;
 	}
@@ -123,24 +118,14 @@ public class Subsidy implements UserEvent ,Message , java.io.Serializable{
 	public void setTimeslot(String timeslot) {
 		this.timeslot = timeslot;
 	}
-	public String getSubsidytype() {
-		return subsidytype;
-	}
-	public void setSubsidytype(String subsidytype) {
-		this.subsidytype = subsidytype;
-	}
+	
 	public int getFrequency() {
 		return frequency;
 	}
 	public void setFrequency(int frequency) {
 		this.frequency = frequency;
 	}
-	public String getSubsidyruleid() {
-		return subsidyruleid;
-	}
-	public void setSubsidyruleid(String subsidyruleid) {
-		this.subsidyruleid = subsidyruleid;
-	}
+	
 	public String getCommand() {
 		return command;
 	}
@@ -194,5 +179,23 @@ public class Subsidy implements UserEvent ,Message , java.io.Serializable{
 	}
 	public void setAction(String action) {
 		this.action = action;
+	}
+	public int getScore() {
+		return score;
+	}
+	public void setScore(int score) {
+		this.score = score;
+	}
+	public String getRectype() {
+		return rectype;
+	}
+	public void setRectype(String rectype) {
+		this.rectype = rectype;
+	}
+	public String getRuleid() {
+		return ruleid;
+	}
+	public void setRuleid(String ruleid) {
+		this.ruleid = ruleid;
 	}
 }
