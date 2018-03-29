@@ -47,7 +47,7 @@ public class GameEventHandler
     	BeiMiClient beiMiClient = NettyClients.getInstance().getClient(client.getSessionId().toString()) ;
 		if(beiMiClient!=null && !StringUtils.isBlank(beiMiClient.getUserid())){
 			if(CacheHelper.getRoomMappingCacheBean().getCacheObject(beiMiClient.getUserid(), beiMiClient.getOrgi()) != null){
-				ActionTaskUtils.sendEvent("" , beiMiClient.getUserid(), null);
+				//ActionTaskUtils.sendEvent("" , beiMiClient.getUserid(), null);
 			}
 			
 		}

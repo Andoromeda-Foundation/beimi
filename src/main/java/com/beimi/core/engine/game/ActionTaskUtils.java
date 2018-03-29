@@ -83,11 +83,13 @@ public class ActionTaskUtils {
 	}
 	
 	public static void sendEvent(String event, String userid, Message message){
-		message.setCommand(event);
-		BeiMiClient client = NettyClients.getInstance().getClient(userid) ;
-		if(client!=null){
-			if(online(userid , client.getOrgi())){
-				client.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, message);
+		if(message!=null) {
+			message.setCommand(event);
+			BeiMiClient client = NettyClients.getInstance().getClient(userid) ;
+			if(client!=null){
+				if(online(userid , client.getOrgi())){
+					client.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, message);
+				}
 			}
 		}
 	}

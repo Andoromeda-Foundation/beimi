@@ -71,6 +71,10 @@ public class GameConfig implements java.io.Serializable{
 	
 	private String welfare ;	//启用的活动列表
 	
+	private boolean enableturn ;//是否启用轮盘
+	private int turntimes ;		//每日轮盘使用次数
+	private String turntipmsg ;	//已领取过的信息提示
+	
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")

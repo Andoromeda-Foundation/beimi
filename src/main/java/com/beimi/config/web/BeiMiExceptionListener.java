@@ -54,4 +54,13 @@ public class BeiMiExceptionListener extends ExceptionListenerAdapter {
     	ctx.close();
         return true;
     }
+
+	@Override
+	public void onPingException(Exception arg0, SocketIOClient arg1) {
+		if(arg0 instanceof IOException){
+    		log.info(arg0.getMessage());
+    	}else{
+    		log.error(arg0.getMessage(), arg0);
+    	}
+	}
 }
