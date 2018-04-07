@@ -55,6 +55,7 @@ cc.Class({
              */
             cc.beimi = {};
             cc.beimi.routes = {} ;
+            cc.beimi.event = {}
             cc.beimi.http = require("HTTP");
             cc.beimi.seckey = "beimi";
             cc.beimi.gamestatus = "none" ;
@@ -102,11 +103,8 @@ cc.Class({
             cc.beimi.audio = new Audio();
             cc.beimi.audio.init();
 
-            if(cc.sys.isNative){
-                window.io = SocketIO;
-            }else{
-                window.io = require("socket.io");
-            }
+            var SocketIO = require("socket.io");
+            window.io = new SocketIO();
 
             cc.beimi.audio.playBGM("bgMain.mp3");
 

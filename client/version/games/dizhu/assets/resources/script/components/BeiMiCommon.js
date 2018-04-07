@@ -1,3 +1,4 @@
+var Base64 = require("Base64");
 cc.Class({
     extends: cc.Component,
 
@@ -38,10 +39,7 @@ cc.Class({
             cc.beimi.socket = null ;
         }
         cc.beimi.socket = window.io.connect(cc.beimi.http.wsURL + '/bm/game',{"reconnection":true});
-        var param = {
-            token:cc.beimi.authorization,
-            orgi:cc.beimi.user.orgi
-        } ;
+
 
         cc.game.on(cc.game.EVENT_HIDE, function(event) {
             //self.alert("HIDE TRUE");
@@ -61,7 +59,12 @@ cc.Class({
             //self.alert("disconnected from server");
 
         });
-        cc.beimi.socket.emit("gamestatus" , JSON.stringify(param));
+        var param = {
+            token:cc.beimi.authorization,
+            orgi:cc.beimi.user.orgi,
+            userid:cc.beimi.user.id
+        } ;
+        cc.beimi.socket.exec("gamestatus" , param);
         cc.beimi.socket.on("gamestatus" , function(result){
             if(result!=null) {
                 var data = self.parse(result) ;
@@ -260,42 +263,20 @@ cc.Class({
          */
         var param = {
             token:cc.beimi.authorization,
-            orgi:cc.beimi.user.orgi
+            orgi:cc.beimi.user.orgi,
+            userid:cc.beimi.user.id
         } ;
-        cc.beimi.socket.emit("gamestatus" , JSON.stringify(param));
+        cc.beimi.socket.exec("gamestatus" , param);
     },
     root:function(){
         return cc.find("Canvas");
     },
     decode:function(data){
-        var cards = new Array();
 
-        if(!cc.sys.isNative) {
-            var dataView = new DataView(data);
-            for(var i= 0 ; i<data.byteLength ; i++){
-                cards[i] = dataView.getInt8(i);
-            }
-        }else{
-            var Base64 = require("Base64");
-            var strArray = Base64.decode(data) ;
-
-            if(strArray && strArray.length > 0){
-                for(var i= 0 ; i<strArray.length ; i++){
-                    cards[i] = strArray[i];
-                }
-            }
-        }
-
-        return cards ;
+        return Base64.decode(data) ;
     },
     parse:function(result){
-        var data ;
-        if(!cc.sys.isNative){
-            data = result;
-        }else{
-            data = JSON.parse(result) ;
-        }
-        return data ;
+        return JSON.parse(result) ;
     },
     reset:function(data , result){
         //放在全局变量
