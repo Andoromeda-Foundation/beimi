@@ -15,6 +15,17 @@ public class Playeready implements Message,java.io.Serializable {
 	private String command ;
 	
 	private String userid ;
+	
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 
 	public String getCommand() {
 		return command;

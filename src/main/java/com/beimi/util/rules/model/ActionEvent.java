@@ -26,6 +26,7 @@ public class ActionEvent implements Message , java.io.Serializable{
 	
 	private byte cardtype ;
 	private byte cardvalue ;
+	private String event ;
 	
 	private long time ;
 	
@@ -110,5 +111,11 @@ public class ActionEvent implements Message , java.io.Serializable{
 	}
 	public void setActype(String actype) {
 		this.actype = actype;
+	}
+	public String getEvent() {
+		return event;
+	}
+	public void setEvent(String event) {
+		this.event = event;
 	}
 }

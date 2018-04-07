@@ -2,29 +2,18 @@ package com.beimi.util.server;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import com.beimi.config.web.GameServer;
 import com.beimi.core.BMDataContext;
-import com.beimi.util.server.handler.GameEventHandler;
-import com.corundumstudio.socketio.SocketIONamespace;
-import com.corundumstudio.socketio.SocketIOServer;
   
 @Component  
 public class ServerRunner implements CommandLineRunner {  
-    private final SocketIOServer server;
-    private final SocketIONamespace gameSocketNameSpace ;
+    private final GameServer server;
     
     @Autowired  
-    public ServerRunner(SocketIOServer server) {  
+    public ServerRunner(GameServer server) {  
         this.server = server;  
-        gameSocketNameSpace = server.addNamespace(BMDataContext.NameSpaceEnum.GAME.getNamespace())  ;
-    }
-    
-    @Bean(name="gameNamespace")
-    public SocketIONamespace getGameSocketIONameSpace(SocketIOServer server ){
-    	gameSocketNameSpace.addListeners(new GameEventHandler(server));
-    	return gameSocketNameSpace  ;
     }
     
     public void run(String... args) throws Exception { 

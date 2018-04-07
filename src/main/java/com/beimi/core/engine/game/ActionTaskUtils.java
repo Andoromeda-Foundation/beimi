@@ -39,7 +39,7 @@ public class ActionTaskUtils {
 		for(PlayUserClient user : players){
 			BeiMiClient client = NettyClients.getInstance().getClient(user.getId()) ;
 			if(client!=null && online(user.getId(), user.getOrgi())){
-				client.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, message);
+				client.sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, message);
 			}
 		}
 	}
@@ -88,7 +88,7 @@ public class ActionTaskUtils {
 			BeiMiClient client = NettyClients.getInstance().getClient(userid) ;
 			if(client!=null){
 				if(online(userid , client.getOrgi())){
-					client.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, message);
+					client.sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, message);
 				}
 			}
 		}
@@ -102,7 +102,7 @@ public class ActionTaskUtils {
 	 */
 	public static void sendPlayers(BeiMiClient beiMiClient , GameRoom gameRoom){
 		if(online(beiMiClient.getUserid() , beiMiClient.getOrgi())){
-			beiMiClient.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, new GamePlayers(gameRoom.getPlayers() , CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), beiMiClient.getOrgi()), BMDataContext.BEIMI_PLAYERS_EVENT));
+			beiMiClient.sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, new GamePlayers(gameRoom.getPlayers() , CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), beiMiClient.getOrgi()), BMDataContext.BEIMI_PLAYERS_EVENT));
 		}
 	}
 	
@@ -127,7 +127,7 @@ public class ActionTaskUtils {
 		for(PlayUserClient user : players){
 			BeiMiClient client = NettyClients.getInstance().getClient(user.getId()) ;
 			if(client!=null && online(client.getUserid() , client.getOrgi())){
-				client.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, new GamePlayers(gameRoom.getPlayers() , CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), client.getOrgi()), BMDataContext.BEIMI_PLAYERS_EVENT));
+				client.sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, new GamePlayers(gameRoom.getPlayers() , CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), client.getOrgi()), BMDataContext.BEIMI_PLAYERS_EVENT));
 			}
 		}
 	}

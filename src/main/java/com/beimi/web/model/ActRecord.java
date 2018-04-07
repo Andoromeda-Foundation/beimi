@@ -51,6 +51,17 @@ public class ActRecord implements UserEvent ,Message , java.io.Serializable{
 	
 	private String ruleid ;	//补贴规则ID ， 以后扩展备用
 	
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
+	
 	
 	public ActRecord() {}
 	public ActRecord(String command , String result , String token) {

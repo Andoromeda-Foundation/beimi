@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.kie.api.runtime.KieSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.beimi.core.BMDataContext;
@@ -36,13 +35,10 @@ import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
 import com.beimi.web.service.repository.es.PlayUserClientESRepository;
 import com.beimi.web.service.repository.jpa.GameRoomRepository;
-import com.corundumstudio.socketio.SocketIOServer;
 
 @Service(value="beimiGameEngine")
 public class GameEngine {
 	
-	@Autowired
-	protected SocketIOServer server;
 
 	@Resource
 	private KieSession kieSession;

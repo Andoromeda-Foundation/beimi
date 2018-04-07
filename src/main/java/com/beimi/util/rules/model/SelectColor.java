@@ -20,6 +20,16 @@ public class SelectColor implements Message , java.io.Serializable{
 	private String userid ;
 	private int color  = 10;
 	private long time ;
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 	
 	
 	public SelectColor(String banker){

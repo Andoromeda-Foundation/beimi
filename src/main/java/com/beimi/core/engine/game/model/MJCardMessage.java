@@ -27,6 +27,16 @@ public class MJCardMessage implements Message,java.io.Serializable{
 	private String userid ;
 	
 	private String takeuser ; //出牌的人
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 	
 	public MJCardMessage(){
 		

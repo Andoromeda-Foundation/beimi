@@ -5,12 +5,26 @@ import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
 
 public class JoinRoom implements Message{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String command ;
 	private PlayUserClient player ;
 	private int index ;
 	private int maxplayers ;
 	private boolean cardroom ;
 	private String roomid ;
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 	
 	public JoinRoom(PlayUserClient player , int index , int maxplayer , GameRoom gameRoom){
 		this.player = player;

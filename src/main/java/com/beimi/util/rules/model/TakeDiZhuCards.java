@@ -40,6 +40,16 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 	private int cardsnum ;	//当前出牌的人 剩下多少张 牌
 	
 	private String nextplayer ;	// 下一个出牌玩家
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 	
 	
 	public TakeDiZhuCards(){}

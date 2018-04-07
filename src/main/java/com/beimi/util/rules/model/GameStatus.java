@@ -3,6 +3,10 @@ package com.beimi.util.rules.model;
 import com.beimi.core.engine.game.Message;
 
 public class GameStatus implements Message{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String command ;
 	private String gamestatus ;
 	
@@ -10,7 +14,18 @@ public class GameStatus implements Message{
 	private String orgi ;
 	private String gametype ;
 	private String playway ;
-	private boolean cardroom ; 
+	private boolean cardroom ;
+	
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 	
 	public String getCommand() {
 		return command;

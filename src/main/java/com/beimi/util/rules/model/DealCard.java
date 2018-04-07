@@ -3,6 +3,10 @@ package com.beimi.util.rules.model;
 import com.beimi.core.engine.game.Message;
 
 public class DealCard implements Message{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String command ;
 	private String userid ;
 	private int deskcards ;
@@ -13,6 +17,17 @@ public class DealCard implements Message{
 	private String type ;		//胡的类型 ， 杠的类型
 	
 	private int color;	//定缺的是啥
+	
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 	
 	public DealCard(String userid , int deskcards){
 		this.userid = userid ; 

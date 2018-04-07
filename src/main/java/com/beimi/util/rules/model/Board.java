@@ -323,4 +323,15 @@ public abstract class Board implements Message,java.io.Serializable {
 	public void setHistory(List<Byte> history) {
 		this.history = history;
 	}
+	
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 }

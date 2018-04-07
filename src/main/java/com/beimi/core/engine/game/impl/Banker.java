@@ -11,6 +11,16 @@ public class Banker implements Message,Serializable{
 	private static final long serialVersionUID = -9011347288522873348L;
 	private String command ;
 	private String userid ;
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 	
 	public Banker(String userid){
 		this.userid = userid ;

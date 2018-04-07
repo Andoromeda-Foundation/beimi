@@ -1,6 +1,8 @@
 package com.beimi.util.rules.model;
 
-public class SearchRoomResult implements java.io.Serializable{
+import com.beimi.core.engine.game.Message;
+
+public class SearchRoomResult implements Message{
 	/**
 	 * 
 	 */
@@ -9,6 +11,19 @@ public class SearchRoomResult implements java.io.Serializable{
 	private String code ;	//游戏类型
 	private String roomid ; //房间ID
 	private String result ;	//
+	
+	private String command ;
+	
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 	
 	
 	public SearchRoomResult(){}
@@ -53,5 +68,13 @@ public class SearchRoomResult implements java.io.Serializable{
 
 	public void setResult(String result) {
 		this.result = result;
+	}
+
+	public String getCommand() {
+		return command;
+	}
+
+	public void setCommand(String command) {
+		this.command = command;
 	}
 }

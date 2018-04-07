@@ -33,7 +33,6 @@ import com.beimi.web.model.SystemConfig;
 import com.beimi.web.service.repository.jpa.SecretRepository;
 import com.beimi.web.service.repository.jpa.SystemConfigRepository;
 import com.beimi.web.service.repository.jpa.TemplateRepository;
-import com.corundumstudio.socketio.SocketIOServer;
 
 @Controller
 @RequestMapping("/admin/config")
@@ -46,21 +45,14 @@ public class SystemConfigController extends Handler{
     private String path;
 	
 	@Autowired
-	private SocketIOServer server ;
-	
-	@Autowired
 	private SystemConfigRepository systemConfigRes ;
 	
 	@Autowired
 	private SecretRepository secRes ;
 	
-	@Autowired
-	private TemplateRepository templateRes ;
-	
     @RequestMapping("/index")
     @Menu(type = "admin" , subtype = "config" , admin = true)
     public ModelAndView index(ModelMap map , HttpServletRequest request , @Valid String execute) throws SQLException {
-    	map.addAttribute("server", server) ;
     	map.addAttribute("imServerStatus", BMDataContext.getIMServerStatus()) ;
     	List<Secret> secretConfig = secRes.findByOrgi(super.getOrgi(request)) ;
     	if(secretConfig!=null && secretConfig.size() > 0){
@@ -81,7 +73,6 @@ public class SystemConfigController extends Handler{
     public ModelAndView stopimserver(ModelMap map , HttpServletRequest request , @Valid String confirm) throws SQLException {
     	boolean execute = false ;
     	if(execute = UKTools.secConfirm(secRes, super.getOrgi(request), confirm)){
-	    	server.stop();
 	    	BMDataContext.setIMServerStatus(false);
     	}
         return request(super.createRequestPageTempletResponse("redirect:/admin/config/index.html?execute="+execute));
@@ -99,7 +90,6 @@ public class SystemConfigController extends Handler{
     public ModelAndView stop(ModelMap map , HttpServletRequest request , @Valid String confirm) throws SQLException {
     	boolean execute = false ;
     	if(execute = UKTools.secConfirm(secRes, super.getOrgi(request), confirm)){
-	    	server.stop();
 	    	BMDataContext.setIMServerStatus(false);
 	    	System.exit(0);
     	}

@@ -5,12 +5,26 @@ import com.beimi.core.engine.game.Message;
 import com.beimi.web.model.PlayUser;
 
 public class PVAOperatorResult implements Message{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String status ;	//操作状态 ， 成功|失败|等待|未知|无权限|非法操作|用户不存在
 	private int balance ;	//余额
 	private int amount ;	//改变的金额
 	private String action ;	//操作类型
 	private String message ;//操作提示消息
 	private String command ;//指令
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 	
 	public PVAOperatorResult(String status, String action , PlayUser playUser){
 		this(status, action, playUser, 0 , null) ;

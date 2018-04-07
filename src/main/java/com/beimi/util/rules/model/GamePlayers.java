@@ -6,9 +6,23 @@ import com.beimi.core.engine.game.Message;
 import com.beimi.web.model.PlayUserClient;
 
 public class GamePlayers implements Message{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int maxplayers ;
 	private String command ;
 	private List<PlayUserClient> player ;
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 	
 	public GamePlayers(int maxplayers , List<PlayUserClient> player ,String command){
 		this.maxplayers = maxplayers ;

@@ -29,7 +29,9 @@ import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.rules.model.Action;
 import com.beimi.util.rules.model.Board;
 import com.beimi.util.rules.model.Player;
+import com.beimi.util.server.handler.BeiMiClient;
 import com.beimi.web.model.AccountConfig;
+import com.beimi.web.model.ActRecord;
 import com.beimi.web.model.AiConfig;
 import com.beimi.web.model.BeiMiDic;
 import com.beimi.web.model.GameConfig;
@@ -39,13 +41,11 @@ import com.beimi.web.model.GamePlaywayGroupItem;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUser;
 import com.beimi.web.model.PlayUserClient;
-import com.beimi.web.model.ActRecord;
 import com.beimi.web.model.SysDic;
 import com.beimi.web.service.repository.es.ActRecordESRepository;
 import com.beimi.web.service.repository.jpa.GamePlaywayGroupItemRepository;
 import com.beimi.web.service.repository.jpa.GamePlaywayGroupRepository;
 import com.beimi.web.service.repository.jpa.GamePlaywayRepository;
-import com.corundumstudio.socketio.SocketIOClient;
 
 public class GameUtils {
 	
@@ -109,7 +109,7 @@ public class GameUtils {
 			}
 		}
 	}
-	public static Message subsidyPlayerClient(SocketIOClient client , PlayUserClient playUser , String orgi) {
+	public static Message subsidyPlayerClient(BeiMiClient client , PlayUserClient playUser , String orgi) {
 		Message message = null ;
 		if(playUser!=null){
 			GameConfig gameConfig = (GameConfig) CacheHelper.getSystemCacheBean().getCacheObject(BMDataContext.getGameConfig(orgi) , orgi);

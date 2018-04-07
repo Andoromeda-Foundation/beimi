@@ -42,6 +42,17 @@ public class TakeMaJiangCards extends TakeCards implements Message , java.io.Ser
 	
 	private String nextplayer ;	// 下一个出牌玩家
 	
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
+	
 	
 	public TakeMaJiangCards(){}
 	

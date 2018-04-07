@@ -3,6 +3,7 @@ package com.beimi.util.client;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.beimi.core.engine.game.Message;
 import com.beimi.util.server.handler.BeiMiClient;
 
 public class NettySystemClient implements NettyClient{
@@ -29,14 +30,14 @@ public class NettySystemClient implements NettyClient{
 	public void joinRoom(String userid, String roomid) {
 		BeiMiClient beiMiClient = this.getClient(userid) ;
 		if(beiMiClient!=null){
-			beiMiClient.getClient().joinRoom(roomid);
+//			beiMiClient.getClient().joinRoom(roomid);
 		}
 	}
 
-	public void sendGameEventMessage(String userid, String event, Object data) {
+	public void sendGameEventMessage(String userid, String event, Message data) {
 		BeiMiClient beiMiClient = this.getClient(userid) ;
 		if(beiMiClient!=null){
-			beiMiClient.getClient().sendEvent(event, data);
+			beiMiClient.sendEvent(event, data);
 		}
 	}
 }

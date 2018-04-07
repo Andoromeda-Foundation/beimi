@@ -8,6 +8,7 @@ public class ErrorMessage implements java.io.Serializable,Message{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String command ;
+	private String event ;
 	private String result ;
 	private String token ;
 	
@@ -34,5 +35,13 @@ public class ErrorMessage implements java.io.Serializable,Message{
 	}
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
 	}
 }

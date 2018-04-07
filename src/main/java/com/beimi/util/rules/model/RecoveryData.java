@@ -9,6 +9,10 @@ import com.beimi.core.engine.game.impl.Banker;
 import com.beimi.core.engine.game.impl.UserBoard;
 
 public class RecoveryData implements Message{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String command ;
 	private String userid ;
 	private Player player ;
@@ -26,6 +30,17 @@ public class RecoveryData implements Message{
 	private SelectColor selectcolor ;
 	
 	private UserBoard userboard ;
+	
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 	
 	
 	public RecoveryData(Player player , byte[] lasthands , String nextplayer , int time , boolean automic , Board board){

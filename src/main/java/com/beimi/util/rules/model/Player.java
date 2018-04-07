@@ -39,6 +39,17 @@ public class Player implements Message,java.io.Serializable , Cloneable{
 	private boolean banker ;	//庄家
 	private byte[] played ;	//杠碰吃胡
 	private List<Action> actions = new ArrayList<Action>();
+	
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 
 	public byte[] getCards() {
 		return cards;

@@ -48,6 +48,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.tio.http.common.HttpRequest;
 
 import com.beimi.core.BMDataContext;
 import com.beimi.util.cache.CacheHelper;
@@ -66,7 +67,6 @@ import com.beimi.web.service.repository.jpa.TemplateRepository;
 import com.beimi.web.service.repository.jpa.WaresRepository;
 import com.lmax.disruptor.dsl.Disruptor;
 
-import io.netty.handler.codec.http.HttpHeaders;
 import net.coobird.thumbnailator.Thumbnails;
 
 
@@ -645,13 +645,13 @@ public class UKTools {
 	    return ip;  
 	}
 	
-	public static String getIpAddr(HttpHeaders headers , String remoteAddr) {  
-	    String ip = headers.get("x-forwarded-for");  
+	public static String getIpAddr(HttpRequest request , String remoteAddr) {  
+	    String ip = request.getHeaders().get("x-forwarded-for");  
 	    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
-	        ip = headers.get("Proxy-Client-IP");  
+	        ip = request.getHeaders().get("Proxy-Client-IP");  
 	    }  
 	    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
-	        ip = headers.get("WL-Proxy-Client-IP");  
+	        ip = request.getHeaders().get("WL-Proxy-Client-IP");  
 	    }  
 	    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
 	        ip = remoteAddr;  

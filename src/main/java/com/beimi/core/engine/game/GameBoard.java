@@ -40,6 +40,17 @@ public class GameBoard implements Message , java.io.Serializable{
 	
 	private String command ;
 	
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
+	
 	public String getUserid() {
 		return userid;
 	}

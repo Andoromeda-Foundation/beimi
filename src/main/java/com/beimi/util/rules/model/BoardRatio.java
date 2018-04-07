@@ -3,12 +3,25 @@ package com.beimi.util.rules.model;
 import com.beimi.core.engine.game.Message;
 
 public class BoardRatio implements Message{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean bomb ;
 	private int ratio ;
 	private boolean king ;//王炸
 	
 	private String command ;
+	private String event ;
 	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+
 	public BoardRatio(boolean bomb ,boolean king , int ratio){
 		this.bomb = bomb ;
 		this.ratio = ratio ;

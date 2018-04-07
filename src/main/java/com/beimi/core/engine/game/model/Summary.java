@@ -18,6 +18,16 @@ public class Summary implements Message,java.io.Serializable{
 	private String command ;	
 	private boolean finished = true ;
 	private boolean gameRoomOver ;	
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 	
 	private int score ;			//总分
 	private List<SummaryPlayer> players = new ArrayList<SummaryPlayer>() ;

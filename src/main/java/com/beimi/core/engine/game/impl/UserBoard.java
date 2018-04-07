@@ -15,6 +15,16 @@ public class UserBoard implements Message,Serializable{
 	private Player[] players ;
 	private int deskcards ;	//剩下多少张牌
 	private String command ;
+	private String event ;
+	
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+	
 	/**
 	 * 发给玩家的牌，开启特权后可以将某个其他玩家的牌 显示出来
 	 * @param board
