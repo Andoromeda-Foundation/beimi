@@ -15,12 +15,11 @@ var HTTP = cc.Class({
         // ...
     },
     statics: {
-        baseURL:"http://127.0.0.1",
-        wsURL : "http://127.0.0.1:9081",
+        baseURL:"http://192.168.1.155",
+        wsURL : "ws://192.168.1.155:9081",
         authorization: null,
         httpGet: function (url , success , error , object) {
             var xhr = cc.loader.getXMLHttpRequest();
-            
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if(xhr.status >= 200 && xhr.status < 300){
@@ -35,11 +34,16 @@ var HTTP = cc.Class({
                     }
                 }
             };
-
-            xhr.open("GET", HTTP.baseURL+url, true);
-            if(HTTP.authorization != null){
-                xhr.setRequestHeader("authorization", HTTP.authorization) ;
+            let token = "" ;
+            if(cc.beimi!=null && cc.beimi.authorization != null){
+                token = cc.beimi.authorization ;
             }
+            if(url.indexOf("?") >0){
+                xhr.open("GET", HTTP.baseURL+url+"&authorization="+token , true);
+            }else{
+                xhr.open("GET", HTTP.baseURL+url+"?authorization="+token, true);
+            }
+
             if (cc.sys.isNative) {
                 xhr.setRequestHeader("Accept-Encoding", "gzip,deflate");
             }
@@ -88,8 +92,8 @@ var HTTP = cc.Class({
                 }
             };
             xhr.open("POST", HTTP.baseURL+url, true);
-            if(HTTP.authorization !== null){
-                xhr.setRequestHeader("authorization", HTTP.authorization) ;
+            if(cc.beimi!=null && cc.beimi.authorization != null){
+                xhr.setRequestHeader("authorization", cc.beimi.authorization) ;
             }
             if (cc.sys.isNative) {
                 xhr.setRequestHeader("Accept-Encoding", "gzip,deflate");

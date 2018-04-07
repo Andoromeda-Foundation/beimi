@@ -52,7 +52,7 @@ cc.Class({
                     orgi:cc.beimi.user.orgi,
                     userid:cc.beimi.user.id
                 } ;
-                socket.emit("searchroom" , JSON.stringify(param));
+                socket.exec("searchroom" , param);
                 this.registercallback(this.roomCallBack);
             }
             this.loadding();

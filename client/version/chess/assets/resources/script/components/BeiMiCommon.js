@@ -1,3 +1,4 @@
+var Base64 = require("Base64");
 cc.Class({
     extends: cc.Component,
 
@@ -38,10 +39,7 @@ cc.Class({
             cc.beimi.socket = null ;
         }
         cc.beimi.socket = window.io.connect(cc.beimi.http.wsURL + '/bm/game',{"reconnection":true});
-        var param = {
-            token:cc.beimi.authorization,
-            orgi:cc.beimi.user.orgi
-        } ;
+
 
         cc.game.on(cc.game.EVENT_HIDE, function(event) {
             //self.alert("HIDE TRUE");
@@ -61,9 +59,12 @@ cc.Class({
             //self.alert("disconnected from server");
 
         });
-
-
-        cc.beimi.socket.emit("gamestatus" , JSON.stringify(param));
+        var param = {
+            token:cc.beimi.authorization,
+            orgi:cc.beimi.user.orgi,
+            userid:cc.beimi.user.id
+        } ;
+        cc.beimi.socket.exec("gamestatus" , param);
         cc.beimi.socket.on("gamestatus" , function(result){
             if(result!=null) {
                 var data = self.parse(result) ;
@@ -130,12 +131,21 @@ cc.Class({
         }
     },
     alert:function(message){
+        this.alertForCallBack(message , null);
+    },
+    alertForCallBack:function(message , func){
         if(cc.beimi.dialog.size() > 0){
             this.alertdialog = cc.beimi.dialog.get();
             this.alertdialog.parent = cc.find("Canvas");
             let node = this.alertdialog.getChildByName("message") ;
             if(node!=null && node.getComponent(cc.Label)){
                 node.getComponent(cc.Label).string = message ;
+            }
+            if(func!=null){
+                let temp = this.alertdialog.getComponent("BeiMiDialog") ;
+                if(temp!=null){
+                    temp.callback(func);
+                }
             }
         }
         this.closeloadding();
@@ -151,13 +161,21 @@ cc.Class({
             cc.beimi.openwin = null ;
         }
     },
+    openWin:function(prefab){
+        if(prefab!=null){
+            cc.beimi.openwin = cc.instantiate(prefab) ;
+            cc.beimi.openwin.parent = this.root();
+        }
+    },
     pvalistener:function(context , func){
         cc.beimi.listener = func ;
         cc.beimi.context = context ;
     },
     cleanpvalistener:function(){
-        cc.beimi.listener = null ;
-        cc.beimi.context = null ;
+        if(cc.beimi != null){
+            cc.beimi.listener = null ;
+            cc.beimi.context = null ;
+        }
     },
     pva:function(pvatype , balance){   //客户端资产变更（仅显示，多个地方都会调用 pva方法）
         if(pvatype != null){
@@ -171,9 +189,51 @@ cc.Class({
         }
     },
     updatepva:function(){
-        if(cc.beimi.listener != null && cc.beimi.context != null){
+        if(cc.beimi!=null && cc.beimi.listener != null && cc.beimi.context != null){
             cc.beimi.listener(cc.beimi.context);
         }
+    },
+    subsidy:function(){
+        var needsubsidy = false ;
+        if(cc.beimi.user.goldcoins <= 0){
+            let self = this ;
+            needsubsidy = true ;
+            //提示是否需要破产补助 , 提示的时候，需要查询服务端是否当天的 补助次数已用完，如果还有剩余补助次数，则开始补助，否则直接进入商城提示兑换 ， 剩余的补助次数，在服务器推送 PVA信息的时候，同时推送过来
+            if(cc.beimi.data.subsidy == true && cc.beimi.data.subtimes > 0 && cc.beimi.data.subgolds > 0 && cc.beimi.data.lefttimes >0){
+                // cc.loader.loadRes("prefab/welfare/over", function (err, prefab) {
+                //     cc.beimi.openwin = cc.instantiate(prefab);
+                //     cc.beimi.openwin.parent = cc.beimi.context.root();
+                // });
+                let tipmsg = "金币不足，您可以领取救济金。";
+                if(cc.beimi.data.submsg != null){
+                    tipmsg = cc.beimi.data.submsg  ;
+                }
+                this.alertForCallBack( tipmsg, function(){
+                    self.welfareDialog();
+                });
+            }else{
+                let recmsg = "金币不足，请充值。" ;
+                if(cc.beimi.data.recmsg != null){
+                    recmsg = cc.beimi.data.recmsg  ;
+                }
+                this.alertForCallBack(recmsg , function(){
+                    self.shopDialog();
+                });
+            }
+        }
+        return needsubsidy ;
+    },
+    welfareDialog:function(){
+        cc.loader.loadRes("prefab/welfare/over", function (err, prefab) {
+            cc.beimi.openwin = cc.instantiate(prefab);
+            cc.beimi.openwin.parent = cc.beimi.context.root();
+        });
+    },
+    shopDialog:function(){
+        cc.loader.loadRes("prefab/welfare/shop", function (err, prefab) {
+            cc.beimi.openwin = cc.instantiate(prefab);
+            cc.beimi.openwin.parent = cc.beimi.context.root();
+        });
     },
     resize:function(){
         let win = cc.director.getWinSize() ;
@@ -203,42 +263,20 @@ cc.Class({
          */
         var param = {
             token:cc.beimi.authorization,
-            orgi:cc.beimi.user.orgi
+            orgi:cc.beimi.user.orgi,
+            userid:cc.beimi.user.id
         } ;
-        cc.beimi.socket.emit("gamestatus" , JSON.stringify(param));
+        cc.beimi.socket.exec("gamestatus" , param);
     },
     root:function(){
         return cc.find("Canvas");
     },
     decode:function(data){
-        var cards = new Array();
 
-        if(!cc.sys.isNative) {
-            var dataView = new DataView(data);
-            for(var i= 0 ; i<data.byteLength ; i++){
-                cards[i] = dataView.getInt8(i);
-            }
-        }else{
-            var Base64 = require("Base64");
-            var strArray = Base64.decode(data) ;
-
-            if(strArray && strArray.length > 0){
-                for(var i= 0 ; i<strArray.length ; i++){
-                    cards[i] = strArray[i];
-                }
-            }
-        }
-
-        return cards ;
+        return Base64.decode(data) ;
     },
     parse:function(result){
-        var data ;
-        if(!cc.sys.isNative){
-            data = result;
-        }else{
-            data = JSON.parse(result) ;
-        }
-        return data ;
+        return JSON.parse(result) ;
     },
     reset:function(data , result){
         //放在全局变量
@@ -249,7 +287,7 @@ cc.Class({
 
         cc.beimi.data = data ;
         cc.beimi.playway = null ;
-        this.io.put("userinfo" ,result );
+        this.io.put("token" ,data.token.id);
     },
     logout:function(){
         this.closeOpenWin();

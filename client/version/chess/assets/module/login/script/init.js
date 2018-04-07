@@ -55,6 +55,7 @@ cc.Class({
              */
             cc.beimi = {};
             cc.beimi.routes = {} ;
+            cc.beimi.event = {}
             cc.beimi.http = require("HTTP");
             cc.beimi.seckey = "beimi";
             cc.beimi.gamestatus = "none" ;
@@ -102,13 +103,25 @@ cc.Class({
             cc.beimi.audio = new Audio();
             cc.beimi.audio.init();
 
-            if(cc.sys.isNative){
-                window.io = SocketIO;
-            }else{
-                window.io = require("socket.io");
-            }
+            var SocketIO = require("socket.io");
+            window.io = new SocketIO();
 
             cc.beimi.audio.playBGM("bgMain.mp3");
+
+            cc.Button.prototype.touchEndedClone = cc.Button.prototype._onTouchEnded ;
+            cc.Button.prototype._soundOn = true ;
+            cc.Button.prototype.setSoundEffect = function(on){
+                this._soundOn = on ;
+            }
+            cc.Button.prototype._onTouchEnded = function(event){
+                if(this.interactable && this.enabledInHierarchy && this._pressed && this._soundOn == true){
+                    /**
+                     * 播放声效
+                     */
+                    cc.beimi.audio.playSFX("select.mp3");
+                }
+                this.touchEndedClone(event) ;
+            }
         }
     }
 

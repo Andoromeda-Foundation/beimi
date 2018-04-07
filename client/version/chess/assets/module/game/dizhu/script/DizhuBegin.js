@@ -155,7 +155,7 @@ cc.Class({
                 orgi:cc.beimi.user.orgi,
                 extparams:cc.beimi.extparams
             } ;
-            socket.emit("joinroom" ,JSON.stringify(param)) ;
+            socket.exec("joinroom" ,param) ;
 
             this.inited = true ;
         }
