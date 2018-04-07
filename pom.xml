@@ -133,7 +133,7 @@
 		<dependency>
 			<groupId>org.t-io</groupId>
 			<artifactId>tio-websocket-server</artifactId>
-			<version>0.0.9-tio-websocket</version>
+			<version>0.1.0-tio-websocket</version>
 		</dependency>
 		
 		<dependency>
