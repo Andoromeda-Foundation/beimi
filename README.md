@@ -9,7 +9,7 @@
 
 1. 开发工具：Cocos Creater
 1. 开发语言：Java + JavaScript
-1. 服务端框架：Spring Boot + MySQL + JPA + NettySocketIO
+1. 服务端框架：Spring Boot + MySQL + JPA + [TIO](https://gitee.com/tywo45/t-io)
 1. 客户端语言：Cocos Creater/JavaScript
 
  **
