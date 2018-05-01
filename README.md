@@ -22,13 +22,6 @@
  ** 
 
 
-
-加入QQ群，了解最新开发进度 ，QQ群号： 529311623
-
-[![输入图片说明](https://git.oschina.net/uploads/images/2017/0609/233259_8ab02715_1387891.png "在这里输入图片标题")](http:////shang.qq.com/wpa/qunwpa?idkey=3735ebb729ef696009be07fa2e2eba7feee6acf89c07e6e68a9b56504d9fabd0)
-
-关注微信公众号，购买付费视频课程，微信公众号：贝密信息，yunbeimi
-
 ![输入图片说明](https://gitee.com/uploads/images/2018/0108/081612_5e29673b_1387891.jpeg "qrcode_for_gh_b21c83fa3ff9_344.jpg")
 
 UI效果图：
