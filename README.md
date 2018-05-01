@@ -22,8 +22,6 @@
  ** 
 
 
-![输入图片说明](https://gitee.com/uploads/images/2018/0108/081612_5e29673b_1387891.jpeg "qrcode_for_gh_b21c83fa3ff9_344.jpg")
-
 UI效果图：
 ![输入图片说明](https://git.oschina.net/uploads/images/2017/0719/192826_1d6f397f_1387891.png "屏幕截图.png")
 ![输入图片说明](https://git.oschina.net/uploads/images/2017/0709/131509_9a969010_1387891.jpeg "在这里输入图片标题")
