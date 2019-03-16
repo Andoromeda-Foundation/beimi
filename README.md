@@ -1,7 +1,19 @@
-Fork from: https://gitee.com/beimigame/beimi
-Retrieved: Mar. 16th 2019
+# 项目资料
+后台地址: http://47.52.134.165:8080/login.html
+- admin
+- 123456
 
-# 贝米游戏
+baseURL: "http://47.52.134.165:8080"
+wsURL: "ws://47.52.134.165:9081"
+
+似乎原本项目方打算做德扑，但是好像最后没有做完。
+
+
+
+# 贝密游戏
+Fork from: https://gitee.com/beimigame/beimi Retrieved: Mar. 16th 2019
+[更新日志](https://www.oschina.net/p/beimi)
+
 最新版 0.8.0
 
 开源棋牌游戏，包含麻将、德州、斗地主。首个版本会采用当前最流行的房卡模式。

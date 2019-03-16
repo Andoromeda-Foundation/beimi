@@ -14,9 +14,9 @@ cc.Class({
         // ...
         bgVolume:1.0,           // 背景音量
 
-        deskVolume:1.0,         //   房间 房间音量
+        deskVolume:1.0,         // 房间音量
         
-        bgAudioID:-1            //   背景 音乐  id
+        bgAudioID:-1            // 背景音乐 id
     },
 
     // use this for initialization
