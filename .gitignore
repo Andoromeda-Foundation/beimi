@@ -3,3 +3,14 @@
 /docker/mysql/data
 /data
 /target
+
+.DS_Store
+/__MACOSX
+
+/node_modules
+
+/library
+/local
+/temp
+
+/build
