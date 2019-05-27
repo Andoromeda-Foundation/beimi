@@ -128,15 +128,14 @@
           }
         },
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 0,
-              "curve": "linear"
+              "value": 0
             },
             {
               "frame": 1.1666666666666667,
-              "value": 360
+              "value": -360
             }
           ]
         }

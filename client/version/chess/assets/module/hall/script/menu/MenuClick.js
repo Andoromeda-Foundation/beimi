@@ -32,6 +32,10 @@ cc.Class({
         feedback: {
             default: null,
             type: cc.Prefab
+        },
+        exchange: {
+            default: null,
+            type: cc.Prefab
         }
     },
 
@@ -62,6 +66,10 @@ cc.Class({
     },
     onFeedBackClick:function(){
         cc.beimi.openwin = cc.instantiate(this.feedback) ;
+        cc.beimi.openwin.parent = this.root();
+    },
+    onExchangeClick:function(){
+        cc.beimi.openwin = cc.instantiate(this.exchange) ;
         cc.beimi.openwin.parent = this.root();
     }
 
