@@ -36,6 +36,10 @@ cc.Class({
         exchange: {
             default: null,
             type: cc.Prefab
+        },
+        popup: {
+            default: null,
+            type: cc.Prefab
         }
     },
 
@@ -70,6 +74,10 @@ cc.Class({
     },
     onExchangeClick:function(){
         cc.beimi.openwin = cc.instantiate(this.exchange) ;
+        cc.beimi.openwin.parent = this.root();
+    },
+    onExitClick:function(){
+        cc.beimi.openwin = cc.instantiate(this.popup) ;
         cc.beimi.openwin.parent = this.root();
     }
 
