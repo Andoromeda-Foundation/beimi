@@ -41,9 +41,9 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 1.3240012017610063,
-      "y": 1.3240012017610063,
-      "z": 1.3240012017610063
+      "x": 0.48833927501070623,
+      "y": 0.48833927501070623,
+      "z": 0.48833927501070623
     },
     "_quat": {
       "__type__": "cc.Quat",
@@ -86,10 +86,10 @@
     "_level": 0,
     "_components": [
       {
-        "__id__": 257
+        "__id__": 258
       },
       {
-        "__id__": 258
+        "__id__": 259
       }
     ],
     "_prefab": null,
@@ -8386,6 +8386,9 @@
     "_components": [
       {
         "__id__": 256
+      },
+      {
+        "__id__": 257
       }
     ],
     "_prefab": null,
@@ -12163,6 +12166,23 @@
     ],
     "playOnLoad": false,
     "_id": "8b+xTge3pEGIqnd9jxeuwW"
+  },
+  {
+    "__type__": "cc.Mask",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 173
+    },
+    "_enabled": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_spriteFrame": null,
+    "_type": 0,
+    "_segments": 64,
+    "_N$alphaThreshold": 0,
+    "_N$inverted": false,
+    "_id": "d6hInTIEJLzpWF9Nmyw/sv"
   },
   {
     "__type__": "cc.Canvas",
