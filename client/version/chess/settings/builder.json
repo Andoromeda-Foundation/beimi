@@ -1,8 +1,17 @@
 {
+  "android-instant": {
+    "REMOTE_SERVER_ROOT": "",
+    "host": "",
+    "pathPattern": "",
+    "recordPath": "",
+    "scheme": "https",
+    "skipRecord": false
+  },
   "appKey": "",
   "appSecret": "",
   "encryptJs": true,
   "excludeScenes": [],
+  "fb-instant-games": {},
   "includeAnySDK": false,
   "includeSDKBox": false,
   "inlineSpriteFrames": true,
@@ -20,6 +29,11 @@
   },
   "packageName": "com.beimi",
   "privateKey": "",
+  "qqplay": {
+    "REMOTE_SERVER_ROOT": "",
+    "orientation": "portrait",
+    "zip": false
+  },
   "startScene": "1db3d56a-e495-44b9-a343-d13e8a09ce72",
   "title": "beimi",
   "webOrientation": "landscape",
@@ -28,19 +42,5 @@
     "orientation": "landscape"
   },
   "xxteaKey": "4b253bbe-9923-49",
-  "zipCompressJs": true,
-  "qqplay": {
-    "orientation": "portrait",
-    "zip": false,
-    "REMOTE_SERVER_ROOT": ""
-  },
-  "fb-instant-games": {},
-  "android-instant": {
-    "REMOTE_SERVER_ROOT": "",
-    "pathPattern": "",
-    "scheme": "https",
-    "host": "",
-    "skipRecord": false,
-    "recordPath": ""
-  }
+  "zipCompressJs": true
 }

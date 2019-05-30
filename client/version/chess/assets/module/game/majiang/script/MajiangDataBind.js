@@ -4,16 +4,6 @@ cc.Class({
     extends: beiMiCommon,
 
     properties: {
-        // foo: {
-        //    default: null,      // The default value will be used only when the component attaching
-        //                           to a node for the first time
-        //    url: cc.Texture2D,  // optional, default is typeof default
-        //    serializable: true, // optional, default is true
-        //    visible: true,      // optional, default is true
-        //    displayName: 'Foo', // optional
-        //    readonly: false,    // optional, default is false
-        // },
-        // ...
         playerprefab:{
             default : null ,
             type : cc.Prefab
@@ -130,21 +120,101 @@ cc.Class({
             default:null ,
             type : cc.Prefab
         },
-        cards_gang_ming_prefab:{
+
+
+        //四个方向的杠、碰、吃、胡：
+        //自己
+        current_gang_ming_prefab:{
+            tooltip: "自己的，杠、碰、吃预设",
             default:null ,
             type : cc.Prefab
         },
-        cards_gang_an_prefab:{
+        current_gang_an_prefab:{
+            tooltip: "自己的，暗杠牌预设",
             default:null ,
             type : cc.Prefab
         },
+        current_gong_current:{
+            tooltip: "自己的，显示碰、杠、吃的节点",
+            default:null ,
+            type : cc.Node
+        },
+        current_hu_cards:{
+            tooltip: "自己的，胡牌节点",
+            default:null ,
+            type : cc.Node
+        },
+
+        //左手边
+        left_gang_ming_prefab:{
+            tooltip: "左手边，杠、碰、吃预设",
+            default:null ,
+            type : cc.Prefab
+        },
+        left_gang_an_prefab:{
+            tooltip: "左手边，暗杠牌预设",
+            default:null ,
+            type : cc.Prefab
+        },
+        left_gong_current:{
+            tooltip: "左手边，显示碰、杠、吃的节点",
+            default:null ,
+            type : cc.Node
+        },
+        left_hu_cards:{
+            tooltip: "左手边，胡牌节点",
+            default:null ,
+            type : cc.Node
+        },
+
+        //右手边
+        right_gang_ming_prefab:{
+            tooltip: "右手边，杠、碰、吃预设",
+            default:null ,
+            type : cc.Prefab
+        },
+        right_gang_an_prefab:{
+            tooltip: "右手边，暗杠牌预设",
+            default:null ,
+            type : cc.Prefab
+        },
+        right_gong_current:{
+            tooltip: "右手边，显示碰、杠、吃的节点",
+            default:null ,
+            type : cc.Node
+        },
+        right_hu_cards:{
+            tooltip: "右手边，胡牌节点",
+            default:null ,
+            type : cc.Node
+        },
+
+        //正对面
+        top_gang_ming_prefab:{
+            tooltip: "正对面，杠、碰、吃预设",
+            default:null ,
+            type : cc.Prefab
+        },
+        top_gang_an_prefab:{
+            tooltip: "正对面，暗杠牌预设",
+            default:null ,
+            type : cc.Prefab
+        },
+        top_gong_current:{
+            tooltip: "正对面，显示碰、杠、吃的节点",
+            default:null ,
+            type : cc.Node
+        },
+        top_hu_cards:{
+            tooltip: "正对面，胡牌节点",
+            default:null ,
+            type : cc.Node
+        },
+
+
         roomid:{
             default : null ,
             type : cc.Label
-        },
-        gang_current:{        //动作节点
-            default:null ,
-            type : cc.Node
         },
         summary:{
             default:null ,
@@ -153,22 +223,6 @@ cc.Class({
         inviteplayer:{
             default:null ,
             type : cc.Prefab
-        },
-        hu_cards_current:{
-            default:null ,
-            type : cc.Node
-        },
-        hu_cards_top:{
-            default:null ,
-            type : cc.Node
-        },
-        hu_cards_left:{
-            default:null ,
-            type : cc.Node
-        },
-        hu_cards_right:{
-            default:null ,
-            type : cc.Node
         },
         mask:{
             default:null ,
@@ -854,48 +908,51 @@ cc.Class({
     },
     selectaction_event:function(data , context){
         let player = context.player(data.userid , context);
+        let seat = context.getSeatObject(player.tablepos, context);
         /**
          * 杠碰吃，胡都需要将牌从 触发玩家的 桌牌 里 移除，然后放入当前玩家 桌牌列表里，如果是胡牌，则放到 胡牌 列表里，首先
          * 首先，需要找到触发对象，如果触发对象不是 all ， 则 直接找到 对象对应的玩家 桌牌列表，并找到 桌牌里 的最后 的 牌，
          * 然后将此牌 移除即可，如果对象是 all， 则不用做任何处理即可
+         *
+         * 碰，显示碰的动画，
+         * 杠，显示杠的动画，杠分为：明杠，暗杠，弯杠，每种动画效果不同，明杠/暗杠需要扣三家分，弯杠需要扣一家分
+         * 胡，根据玩法不同，推倒胡和血流/血战
          */
-        if(cc.beimi.user.id == data.userid){
-            /**
-             * 碰，显示碰的动画，
-             * 杠，显示杠的动画，杠分为：明杠，暗杠，弯杠，每种动画效果不同，明杠/暗杠需要扣三家分，弯杠需要扣一家分
-             * 胡，根据玩法不同，推倒胡和血流/血战
-             */
-            if(data.target == "all") {
-                let rightpre = cc.instantiate(context.action_gang_ming_prefab);
-                rightpre.parent = context.deskcards_right_panel.parent;
+        if(data.target == "all") {
+            let rightpre = cc.instantiate(context.action_gang_ming_prefab);
+            rightpre.parent = context.deskcards_right_panel.parent;
 
-                let toppre = cc.instantiate(context.action_gang_ming_prefab);
-                toppre.parent = context.deskcards_top_panel.parent;
+            let toppre = cc.instantiate(context.action_gang_ming_prefab);
+            toppre.parent = context.deskcards_top_panel.parent;
 
-                let leftpre = cc.instantiate(context.action_gang_ming_prefab);
-                leftpre.parent = context.deskcards_left_panel.parent;
-            }else{
-                //碰的特效
-                context.select_action_searchlight(data, context , player) ;
+            let leftpre = cc.instantiate(context.action_gang_ming_prefab);
+            leftpre.parent = context.deskcards_left_panel.parent;
+        }else{
+            //碰的特效
+            context.select_action_searchlight(data, context , player) ;
+        }
+
+
+        if(data.action == "hu") {
+            //胡牌了，把胡的牌放入到胡牌列表里，然后 ， 把当前的玩家的牌局置为不可点击
+            let hu_card = cc.instantiate(context.takecards_one);
+            let temp = hu_card.getComponent("DeskCards");
+            temp.init(data.card);
+
+            context.deskcards.push(hu_card);
+            hu_card.setScale (0.5 , 0.5) ;
+            hu_card.parent = seat.huCards;
+            if(cc.beimi.user.id == data.userid) {
+                context.mask.active = true ;    //遮罩，不让操作了
             }
 
-
-
-            if(data.action == "hu") {
-                //胡牌了，把胡的牌放入到胡牌列表里，然后 ， 把当前的玩家的牌局置为不可点击
-                let hu_card = cc.instantiate(context.takecards_one);
-                let temp = hu_card.getComponent("DeskCards");
-                temp.init(data.card);
-
-                context.deskcards.push(hu_card);
-                hu_card.setScale (0.5 , 0.5) ;
-                hu_card.parent = context.hu_cards_current;
-                context.mask.active = true ;    //遮罩，不让操作了
-
-            }else{
-                /**
-                 * 杠后移除当前手牌，进入到 杠 列表里
-                 */
+        }else{
+            /**
+             * 杠后移除当前手牌，进入到 杠 列表里
+             * true  自己的牌
+             * false 别人的牌
+             */
+            if(cc.beimi.user.id == data.userid){
                 for(var inx = 0 ; inx < context.playercards.length ; ){
                     let temp = context.playercards[inx].getComponent("HandCards");
                     if(data.cardtype == temp.mjtype && data.cardvalue == temp.mjvalue){
@@ -905,73 +962,71 @@ cc.Class({
                         inx++ ;
                     }
                 }
-
-                let cards_gang;
-
-                /**
-                 * 刚和碰共用一个 Prefab，都是来自于 cards_gang_ming_prefab ，显示方式也相同， 区别在于：刚显示四张牌，碰显示两张牌
-                 */
-                if (data.actype == "an") {
-                    cards_gang = cc.instantiate(context.cards_gang_an_prefab);
-                } else {
-                    cards_gang = cc.instantiate(context.cards_gang_ming_prefab);
-                }
-                let temp_script = cards_gang.getComponent("GangAction");
-                if (data.action == "gang") {
-                    temp_script.init(data.card, true);
-                } else {
-                    temp_script.init(data.card, false);
-                }
-                if (data.action == "peng" || data.action == "chi") {
-                    /**
-                     *
-                     * 碰了以后的
-                     */
-                    let temp = context.cards_panel.children[context.cards_panel.children.length - 1];
-                    if (temp != null) {
-                        let script = temp.getComponent("HandCards");
-                        if (script != null) {
-                            script.lastone();
-                        }
-                    }
+            }else{
+                let cycles;
+                if(data.action == "gang") {
+                    cycles = 3;
+                }else{
+                    cycles = 2;
                 }
 
-                cards_gang.parent = context.gang_current;
-                context.actioncards.push(cards_gang);
-
-                for (var inx = 0; inx < context.deskcards.length; inx++) {
-                    var temp = context.deskcards[inx];
-                    if (temp != null) {
-                        var script = temp.getComponent("DeskCards");
-                        if (script != null && script.value == data.card) {
-                            temp.destroy();
-                            context.deskcards.splice(inx, inx + 1);
-                            break;
-                        }
-                    }
+                for(var inx = 0 ; inx < cycles ; inx++){
+                    seat.ownCards[inx].destroy();
                 }
             }
 
-            context.exchange_state("nextplayer" , context);
+            let cards_gang;
 
             /**
-             * 隐藏 动作 按钮
+             * 刚和碰共用一个 Prefab，都是来自于 current_gang_ming_prefab ，显示方式也相同， 区别在于：刚显示四张牌，碰显示两张牌
              */
-            context.exchange_state( "action", context);
-        }else{
-            //以下代码是用于找到 杠/碰/吃/胡牌的 目标牌  ， 然后将此牌 从 桌面牌中移除
-            let temp = context.player(data.target, context), deskcardpanel;
-            if (temp.tablepos == "right") {
-                deskcardpanel = context.deskcards_right_panel;
-            } else if (temp.tablepos == "left") {
-                deskcardpanel = context.deskcards_left_panel;
-            } else if (temp.tablepos == "top") {
-                deskcardpanel = context.deskcards_top_panel;
+            if (data.actype == "an") {
+            cards_gang = cc.instantiate(seat.gangAnPrefab);
+            } else {
+            cards_gang = cc.instantiate(seat.gangMingPrefab);
             }
-            if (deskcardpanel.children.length > 0) {
-                deskcardpanel.children[deskcardpanel.children.length - 1].destroy();
+            cards_gang.parent = seat.kongCards;
+            context.actioncards.push(cards_gang);
+
+            let temp_script = cards_gang.getComponent("GangAction");
+            if (data.action == "gang") {
+                temp_script.init(data.card, true);
+            } else {
+                temp_script.init(data.card, false);
+            }
+            if (data.action == "peng" || data.action == "chi") {
+                /**
+                 *
+                 * 碰了以后的
+                 */
+                let temp = context.cards_panel.children[context.cards_panel.children.length - 1];
+                if (temp != null) {
+                    let script = temp.getComponent("HandCards");
+                    if (script != null) {
+                        script.lastone();
+                    }
+                }
+            }
+
+            for (var inx = 0; inx < context.deskcards.length; inx++) {
+                var temp = context.deskcards[inx];
+                if (temp != null) {
+                    var script = temp.getComponent("DeskCards");
+                    if (script != null && script.value == data.card) {
+                        temp.destroy();
+                        context.deskcards.splice(inx, inx + 1);
+                        break;
+                    }
+                }
             }
         }
+
+        context.exchange_state("nextplayer" , context);
+
+        /**
+         * 隐藏 动作 按钮
+         */
+        context.exchange_state( "action", context);
     },
     /**
      * 接收发牌信息，需要根据玩家位置确定是哪家的牌
@@ -1526,4 +1581,60 @@ cc.Class({
     // update: function (dt) {
 
     // },
+
+    //------新加的方法------
+
+     /**
+     * 获取给定方位的座位类型，
+     * @param direction 方位 current / left / right / top
+     * @param context
+     */
+    getSeatObject(direction, context) {
+        let deskCardPanel, gangMingPrefab, gangAnPrefab, kongCards, huCards, ownCards;
+        switch(direction) {
+            case "current":
+                deskCardPanel = context.deskcards_current_panel;
+                gangMingPrefab = context.current_gang_ming_prefab;
+                gangAnPrefab = context.current_gang_an_prefab;
+                kongCards = context.current_gong_current;
+                huCards = context.current_hu_cards;
+                ownCards = context.playercards;
+                break;
+            case "left":
+                deskCardPanel = context.deskcards_left_panel;
+                gangMingPrefab = context.left_gang_ming_prefab;
+                gangAnPrefab = context.left_gang_an_prefab;
+                kongCards = context.left_gong_current;
+                huCards = context.left_hu_cards;
+                ownCards = context.leftcards;
+                break;
+            case "right":
+                deskCardPanel = context.deskcards_right_panel;
+                gangMingPrefab = context.right_gang_ming_prefab;
+                gangAnPrefab = context.right_gang_an_prefab;
+                kongCards = context.right_gong_current;
+                huCards = context.right_hu_cards;
+                ownCards = context.rightcards;
+                break;
+            case "top":
+                deskCardPanel = context.deskcards_top_panel;
+                gangMingPrefab = context.top_gang_ming_prefab;
+                gangAnPrefab = context.top_gang_an_prefab;
+                kongCards = context.top_gong_current;
+                huCards = context.top_hu_cards;
+                ownCards = context.topcards;
+                break;
+            default:
+                console.error("getSeatObject参数错误");
+        }
+        return {
+            deskCardPanel,  //放已经出的牌的区域
+            gangMingPrefab, //杠、碰、吃预设
+            gangAnPrefab,   //暗杠预设
+            kongCards,      //放杠、碰、吃牌的区域
+            huCards,        //放胡牌的区域
+            ownCards,       //手牌列表
+        }
+
+    },
 });
