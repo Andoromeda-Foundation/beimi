@@ -102,10 +102,26 @@ cc.Class({
             this.target.y = this.target.y - 30 ;
             this.take = false ;
         }
+    },
+
+    /**
+     * 初始化牌列表
+     * @param playercards 牌列表
+     */
+    initCards(playercards) {
+        this.playercards = playercards;
+    },
+
+    /**
+     * 取消选中
+     */
+    uncheck () {
+        this.playercards.forEach((item)=>{
+            let handCards = item.getComponent("HandCards");
+            if(handCards.take == true){
+                handCards.take = false;
+                item.y = item.y - 30;
+            }
+        });
     }
-
-    // called every frame, uncomment this function to activate update callback
-    // update: function (dt) {
-
-    // },
 });

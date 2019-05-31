@@ -1211,6 +1211,7 @@ cc.Class({
         context.playercards.push(temp);
 
         temp_script.init(data.card);
+        temp_script.initCards(context.playercards);
 
         temp_script.lastone();
         if(parseInt(data.card / 36) == data.color && data.card >= 0){
@@ -1256,6 +1257,7 @@ cc.Class({
         }
     },
     initMjCards:function(group , context , cards , banker){
+        console.log("开牌列表：", cards, group, banker);
         for(var i=group*4 ; i< cards.length && i<(group+1)*4 ; i++){
             let temp = context.cardpool.get();
             let temp_script = temp.getComponent("HandCards") ;
@@ -1263,6 +1265,7 @@ cc.Class({
             context.playercards.push(temp);
 
             temp_script.init(cards[i]);
+            temp_script.initCards(context.playercards);
 
             if(banker == true && i == (cards.length - 1)){
                 temp.parent = context.one_card_panel ;  //庄家的最后一张牌
@@ -1272,7 +1275,7 @@ cc.Class({
 
             setTimeout(function(){
                 temp.parent = context.cards_panel ;
-            } , 200) ;
+            }, 200);
         }
     },
     /**
