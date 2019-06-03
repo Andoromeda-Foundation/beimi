@@ -227,6 +227,14 @@ cc.Class({
         mask:{
             default:null ,
             type : cc.Node
+        },
+        gameTitle:{
+            default:null ,
+            type : cc.Sprite
+        },
+        beimi_1:{
+            default:null ,
+            type : cc.SpriteAtlas
         }
     },
 
@@ -235,6 +243,13 @@ cc.Class({
      * 重构后，只有两个消息类型
      */
     onLoad: function () {
+        if(cc.beimi.gameMode != null) {
+            if(cc.beimi.gameMode == 'river'){
+                this.gameTitle.spriteFrame =  this.beimi_1.getSpriteFrame("背景-game_title6");
+            }else{
+                this.gameTitle.spriteFrame =  this.beimi_1.getSpriteFrame("背景-game_title7");
+            }
+        }
         this.initdata(true);
         this.resize();
         let self = this ;

@@ -38,7 +38,8 @@ cc.Class({
     onLoad: function () {
 
     },
-    init:function(playway){
+    init:function(playway, name){
+        this.name = name;
         /**
          * 需要预先请求 在线人数
          */

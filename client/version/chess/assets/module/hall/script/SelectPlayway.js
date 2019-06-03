@@ -106,7 +106,7 @@ cc.Class({
                 if(script == null){
                     script = playway.getComponent("RoomPlayway") ;
                 }
-                script.init(gametype.playways[inx]);
+                script.init(gametype.playways[inx], data);
                 playway.parent = this.content ;
                 this.playwayarray.push(playway) ;
             }

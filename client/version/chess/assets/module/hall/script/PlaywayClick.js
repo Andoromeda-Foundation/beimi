@@ -34,6 +34,7 @@ cc.Class({
             gametype : thisplayway.data.code ,
             playway  : thisplayway.data.id
         } ;
+        cc.beimi.gameMode = thisplayway.name;
         this.closeOpenWin();
         this.preload(extparams , self);
     },
